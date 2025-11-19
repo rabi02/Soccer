@@ -1,0 +1,102 @@
+{% extends "admin/layouts/base.html" %}
+{% block content %}
+<div class="row">
+	<div class="col-md-6 col-sm-6">
+		<h1 id="titleclass">Odds Probability </h1>
+	</div>
+	<div class="col-md-6 col-sm-6 text-right">
+		<input class="btn btn-success" type=button value="Back" onClick="javascript:history.go(-1);">
+	</div>
+	<div class="col-md-12 col-sm-12">
+		<form id="OddsProbability" action="/admin/db_table/OddsProbability/" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+			{% csrf_token %}
+			<div class="row">
+				<div class="col-md-4 col-sm-4">
+					<select class="form-control" name="hometeam" id="hometeam" >
+						<option value="">Select Home Team</option>
+						 {% for tl in teamlist %}
+						 	{% if tl.name != 'None' %}
+						 		<option value="{{tl.team_id}}" {% if tl.team_id == team_search %} selected="selected" {% endif %}>{{tl.name}}</option>
+						 	{% endif %}
+						 {% endfor %}
+					</select>
+				</div>
+				<div class="col-md-4 col-sm-4">
+					<select class="form-control" name="awayteam" id="awayteam">
+						<option value="">Select Away Team</option>
+						 {% for al in teamlist %}
+						 	{% if al.name != 'None' %}
+						 		<option value="{{al.team_id}}" {% if al.team_id == team_search %} selected="selected" {% endif %}>{{al.name}}</option>
+						 	{% endif %}
+						 {% endfor %}
+					</select>
+				</div>
+				
+				<div class="col-md-4 col-sm-4">
+					<input class="btn btn-success" type=submit value="Submit">
+				</div>
+			</div>
+		</form>
+	</div>
+	{% if res %}
+	<div class="col-md-12 col-sm-12">
+		<div class="row">
+			<div class="col-md-4 col-sm-4">
+				{{res.home_team_name}} (Home)
+			</div>
+			<div class="col-md-4 col-sm-4">
+				{{res.away_team_name}} (Away)
+			</div>
+			<div class="col-md-4 col-sm-4">
+				Odds Probability (%)
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-12 col-sm-12">
+		<div class="row border">
+			<div class="col-md-4 col-sm-4">
+				<div class="row">
+					<div class="col-md-4 col-sm-4">Win</div>
+					<div class="col-md-4 col-sm-4">Draw</div>
+					<div class="col-md-4 col-sm-4">Loss</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4">{{res.home_team_detail.total_win}}</div>
+					<div class="col-md-4 col-sm-4">{{res.home_team_detail.total_drow}}</div>
+					<div class="col-md-4 col-sm-4">{{res.home_team_detail.total_loss}}</div>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<div class="row">
+					<div class="col-md-4 col-sm-4">Win</div>
+					<div class="col-md-4 col-sm-4">Draw</div>
+					<div class="col-md-4 col-sm-4">Loss</div>
+
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4">{{res.away_team_detail.total_win}}</div>
+					<div class="col-md-4 col-sm-4">{{res.away_team_detail.total_drow}}</div>
+					<div class="col-md-4 col-sm-4">{{res.away_team_detail.total_loss}}</div>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<div class="row">
+					<div class="col-md-4 col-sm-4">Home Odds</div>
+					<div class="col-md-4 col-sm-4">Draw</div>
+					<div class="col-md-4 col-sm-4">Away Odds</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4">{{res.home_team_name}} :{{res.home}}</div>
+					<div class="col-md-4 col-sm-4">{{res.draw}}</div>
+					<div class="col-md-4 col-sm-4">{{res.away_team_name}}:{{res.home}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+{% endblock %}
+
+

@@ -1,0 +1,112 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Data table css -->
+		<link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.css" rel="stylesheet" />
+		<link href="{% static ''%}assets/plugins/datatable/css/buttons.bootstrap5.min.css"  rel="stylesheet">
+		<link href="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.css" rel="stylesheet" />
+
+		<!-- Slect2 css -->
+		<link href="{% static ''%}assets/plugins/select2/select2.min.css" rel="stylesheet" />
+		{% endblock styles %}
+
+						{% block body %}
+						
+						<!-- Row -->
+						<div class="row">
+							<div class="col-12">
+								
+
+								<!--div-->
+								<div class="card">
+									<div class="card-header">
+										<div class="col-md-4 ps-0">
+											<h3 class="card-title">Team List</h3>
+										</div>
+										<div class="col-md-4">
+											<input type="hidden" name="league_search" id="league_search" value="{{league_search}}">
+										</div>
+										<div class="col-md-4 pe-0">
+											<select name="league_id" id="league_id" class="form-control" onchange="leaguebyTeam(this)">
+												<option>League</option>
+											{% for lg in league_detail %}
+												<option value="{{lg.league_id}}">{{lg.name}}</option>
+											{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="table transaction-table table-sm table-striped" id="example2">
+												<thead class="thead-light">
+													<tr>
+														<th class="wd-15p border-bottom-0">Id</th>
+														<th class="wd-15p border-bottom-0"></th>
+														<th class="wd-15p border-bottom-0">Name</th>
+														<th class="wd-10p border-bottom-0">Country</th>
+														<th class="wd-10p border-bottom-0">Found</th>
+														<th class="wd-10p border-bottom-0">Win</th>
+														<th class="wd-10p border-bottom-0">Draw</th>
+														<th class="wd-10p border-bottom-0">Lost</th>
+														<th class="wd-25p border-bottom-0">More Info</th>
+													</tr>
+												</thead>
+												<tbody>
+													{% for tm in result%}
+														<tr>
+															<td>{{tm.team_id}}</td>
+															<td>
+																<img width="30" src="data:image/gif;base64,{{tm.image}}" alt=""/>
+															</td>
+															<td>{{tm.name}}</td>
+															<td>{{tm.country}}</td>
+															<td>{{tm.founded}}</td>
+															<td>{{tm.win_total}}</td>
+															<td>{{tm.draw_total}}</td>
+															<td>{{tm.lost_total}}</td>
+															
+															<td class="text-center">
+															<a href="/admin/db_table/ViewTeamStatistics/{{tm.team_id}}"><i class="ion-navicon-round"  aria-label="ion-navicon-round"></i></a>
+															</td>
+														</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<!--/div-->
+								
+							</div>
+						</div>
+						<!-- /Row -->
+						{% endblock body %}
+					
+		{% block scripts %}
+		<!-- Data tables -->
+		<script src="{% static ''%}assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/jszip.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.html5.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.print.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/dataTables.responsive.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+		<script src="{% static ''%}assets/js/datatables.js"></script>
+
+		<!-- Select2 js -->
+		<script src="{% static ''%}assets/plugins/select2/select2.full.min.js"></script>
+		<script>
+				function leaguebyTeam(selval){
+					var value = selval.options[selval.selectedIndex].value;
+					// alert(value)
+					var league = '?league='+value;
+					window.location.href=league;
+				}
+		</script>
+		{% endblock scripts %}

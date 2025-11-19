@@ -1,0 +1,85 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Forn-wizard css-->
+		
+		{% endblock styles %}
+
+			{% block body %}
+			
+
+			<!-- Row -->
+			<div class="row ">
+				<div class="col-md-12">
+					<div class="card">
+						{% if success_message != '' %}
+								<div class="alert alert-success">
+									<strong>Success!</strong> {{success_message}}
+								</div>
+								{% endif %}
+						<div class="card-header">
+							<div class="card-title">
+								Upload Excel / Json
+							</div>
+								
+						</div>
+						<div class="card-body pb-2">
+							<form action="/admin/db_table/Uploadexcel" class="needs-validation" class="needs-validation" method="post" novalidate enctype="multipart/form-data">
+								<div class="row row-sm">
+									<div class="col-lg-6">
+									
+										<div class="mb-3">
+											<div class="form-label">Description</div> 
+										 		<input type="text" class="form-control" name="league"id="league" value="{{csv_detail.league}}">
+										  </div>
+									</div>
+									<div class="col-lg-6">
+										<input type="hidden" value="{{csv_detail.id}}" name="id" id="id">
+										<div class="mb-3"> <div class="form-label">Upload Excel</div> <div class="form-file"> <input type="file" class="form-file-input" name="excel_file"> <label class="form-file-label">Choose file</label> </div> </div>
+										{% if excel_detail.excel_file %}
+										<a href="{ excel_detail.excel_file}">
+										{% endif %}
+									</div>
+									
+								</div>
+								<div class="col-md-12 text-center">
+									<button class="btn btn-success" type="submit">Submit</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/Row -->
+			
+			{% endblock body %}
+					
+		{% block scripts %}
+		<!-- Jquery.steps js -->
+		<script src="{% static ''%}assets/plugins/wysiwyag/jquery.richtext.js"></script>
+		<script src="{% static ''%}assets/js/form-editor.js"></script>
+		<script src="{% static ''%}assets/plugins/quill/quill.min.js"></script>
+		<script src="{% static ''%}assets/js/form-editor2.js"></script>
+		<script>
+	        // Self-executing function
+	        (function() {
+	            'use strict';
+	            window.addEventListener('load', function() {
+	                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+	                var forms = document.getElementsByClassName('needs-validation');
+	                
+	                // Loop over them and prevent submission
+	                var validation = Array.prototype.filter.call(forms, function(form) {
+	                    form.addEventListener('submit', function(event) {
+	                        if (form.checkValidity() === false) {
+	                            event.preventDefault();
+	                            event.stopPropagation();
+	                        }
+	                        form.classList.add('was-validated');
+	                    }, false);
+	                });
+	            }, false);
+	        })();
+    	</script>
+		{% endblock scripts %}

@@ -1,0 +1,240 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+        <!---jvectormap css-->
+        <link href="{% static ''%}assets/plugins/jvectormap/jqvmap.css" rel="stylesheet" />
+
+        <!-- Data table css -->
+        <link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+        <!--Daterangepicker css-->
+        <link href="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+		{% endblock styles %}
+
+					{% block body %}
+                    <!--Page header-->
+                    <div class="card">
+                        <div class="card-header">
+							<div class="col-md-10 col-sm-10 ps-0">
+								<h3 class="card-title">Team Detail</h3>
+							</div>
+							<div class="col-md-2 col-sm-2 text-end pe-0">
+								<input class="btn btn-success" type=button value="Back" onClick="javascript:history.go(-1);">
+							</div>
+						</div>
+	                    <div class="card-body">
+	                    	<div class="row">
+		                    	<div class="col-xl-4 col-md-4 col-lg-4">
+		                        	<div class="card">
+										<div class="card-header">
+											<h3 class="card-title">{{result.name}}</h3>
+										</div>
+		                        		<div class="card-body p-0">
+		                        			<div class="table-responsive">
+		                        				<div class="text-ceter">
+			                        				<img width="160" src="{{result.logo_path}}">
+			                        			</div>
+		                        				<table class="table table-striped card-table table-vcenter text-nowrap mb-0">
+			                        				
+			                        				<tbody>
+			                        					
+			                        					<tr class="text-center">
+			                        						<th colspan="2">
+			                        							<img width="160" class="mb-3" src="data:image/gif;base64,{{result.image}}" alt=""/>
+			                        						</th>
+			                        					</tr>
+			                        					<tr>
+			                        						<th>Country</th>
+			                        						<td>{{result.country}}</td>
+			                        					</tr>
+			                        					<tr>
+			                        						<th>National Team</th>
+			                        						<td>{{result.is_national_team}}</td>
+			                        					</tr>
+			                        					<tr>
+			                        						<th>Founded</th>
+			                        						<td>{{result.founded}}</td>
+			                        					</tr>
+			                        					<tr>
+			                        						<th>Coach Name</th>
+			                        						<td>{{result.coach_name}}</td>
+			                        					</tr>	
+			                        					
+			                        					
+			                        				</tbody>
+		                        				</table>
+		                        			</div>
+		                        		</div>
+				                    </div> 
+		                        </div>
+		                        <div class="col-xl-8 col-md-8 col-lg-8">
+									<h3 class="card-title">Team Statistics</h3>
+		                        	<div class="card-body p-0">
+	                        			<div class="table-responsive">
+	                        				<table class="table transaction-table table-sm table-striped">
+	                        					{% for rec in final_result%}
+		                        				<thead class="thead-light">
+		                        					<tr>
+		                        						<th></th>
+		                        						<th>Total</th>
+		                        						<th>Home</th>
+		                        						<th>Away</th>
+		                        					</tr>
+		                        				</thead>
+		                        				<tbody>
+		                        					
+		                        					<tr>
+		                        						<th>Win</th>
+		                        						<td>{{rec.win_total}}</td>
+		                        						<td>{{rec.win_home}}</td>
+		                        						<td>{{rec.win_away}}</td>
+		                        						
+		                        					</tr>
+		                        					<tr>
+		                        						<th>Draw</th>
+		                        						<td>{{rec.draw_total}}</td>
+		                        						<td>{{rec.draw_home}}</td>
+		                        						<td>{{rec.draw_away}}</td>
+		                        						
+		                        					</tr>
+		                        					<tr>
+		                        						<th>Lost</th>
+		                        						<td>{{rec.lost_total}}</td>
+		                        						<td>{{rec.lost_home}}</td>
+		                        						<td>{{rec.lost_away}}</td>
+		                        						
+		                        					</tr>
+		                        					<tr>
+		                        						<th>Goal For</th>
+		                        						<td>{{rec.goals_for_total}}</td>
+		                        						<td>{{rec.goals_for_home}}</td>
+		                        						<td>{{rec.goals_for_away}}</td>
+		                        						
+		                        					</tr>
+		                        					<tr>
+		                        						<th>Goal Against</th>
+		                        						<td>{{rec.goals_against_total}}</td>
+		                        						<td>{{rec.goals_against_home}}</td>
+		                        						<td>{{rec.goals_against_away}}</td>
+		                        						
+		                        					</tr>
+		                        					<tr>
+		                        						<th>Clean Sheet</th>
+		                        						<td>{{rec.clean_sheet_total}}</td>
+		                        						<td>{{rec.clean_sheet_home}}</td>
+		                        						<td>{{rec.clean_sheet_away}}</td>
+		                        						
+		                        					</tr>
+		                        					<tr>
+		                        						<th>Average Goal Per Game Score</th>
+		                        						<td>{{rec.avg_goals_per_game_scored_total}}</td>
+		                        						<td>{{rec.avg_goals_per_game_scored_home}}</td>
+		                        						<td>{{rec.avg_goals_per_game_scored_away}}</td>
+		                        						
+		                        					</tr>
+		                        					<tr>
+		                        						<th>Average Goal Per Game Conceded</th>
+		                        						<td>{{rec.avg_goals_per_game_conceded_total}}</td>
+		                        						<td>{{rec.avg_goals_per_game_conceded_home}}</td>
+		                        						<td>{{rec.avg_goals_per_game_conceded_away}}</td>
+		                        						
+		                        					</tr>
+		                        					<tr>
+		                        						<th>Average First Goal Score</th>
+		                        						<td>{{rec.avg_first_goal_scored_total}}</td>
+		                        						<td>{{rec.avg_first_goal_scored_home}}</td>
+		                        						<td>{{rec.avg_first_goal_scored_away}}</td>
+		                        						
+		                        					</tr>
+		                        					<tr>
+		                        						<th>Average First Goal Conceded</th>
+		                        						<td>{{rec.avg_first_goal_conceded_total}}</td>
+		                        						<td>{{rec.avg_first_goal_conceded_home}}</td>
+		                        						<td>{{rec.avg_first_goal_conceded_away}}</td>
+		                        						
+		                        					</tr>
+		                        					<tr>
+		                        						<th>Average First Goal Conceded</th>
+		                        						<td>{{rec.avg_first_goal_conceded_total}}</td>
+		                        						<td>{{rec.avg_first_goal_conceded_home}}</td>
+		                        						<td>{{rec.avg_first_goal_conceded_away}}</td>
+		                        						
+		                        					</tr>
+		                        					{% endfor %}
+		                        				</tbody>
+	                        				</table>
+	                        			</div>
+		                        	</div>
+		                        </div>
+	                        </div>
+	                    </div>
+	                </div>
+		            	
+
+                    
+                    {% endblock body %}
+					
+		{% block scripts %}
+         <script src="{% static ''%}assets/plugins/chart/chart.bundle.js"></script>
+        <script src="{% static ''%}assets/plugins/chart/utils.js"></script>
+        <script type="text/javascript">
+        	$(function() {
+				'use strict';
+				var ctx1 = document.getElementById('chartBar1').getContext('2d');
+				
+				var club_season = $('#statistic_popular_intl_club_season').val();
+				var statistic_popular_intl_club_season = club_season.split(",");
+				var club_goals = $('#statistic_popular_intl_clubGoal').val();
+				var statistic_popular_intl_clubGoal = club_goals.split(",");
+				
+				new Chart(ctx1, {
+					type: 'bar',
+					data: {
+						labels:[1,5,10,15,20,25,30,35,40] ,
+						datasets: [{
+							label: '# of Goals',
+							data: statistic_popular_intl_clubGoal,
+							backgroundColor: '#f72d66'
+						}]
+					},
+					options: {
+						maintainAspectRatio: false,
+						responsive: true,
+						legend: {
+							display: false,
+							labels: {
+								display: false
+							}
+						},
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero: true,
+									fontSize: 10,
+									max: 80,
+									fontColor: "#b4b7c5",
+								},
+								gridLines: {
+									color: 'rgba(180, 183, 197, 0.4)'
+								}
+							}],
+							xAxes: [{
+								barPercentage: 0.6,
+								ticks: {
+									beginAtZero: true,
+									fontSize: 11,
+									fontColor: "#b4b7c5",
+								},
+								gridLines: {
+									color: 'rgba(180, 183, 197, 0.4)'
+								}
+							}]
+						}
+					}
+				});
+
+				
+			});
+        </script>
+		{% endblock scripts %}

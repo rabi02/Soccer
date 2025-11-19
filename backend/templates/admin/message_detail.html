@@ -1,0 +1,40 @@
+{% extends "admin/layouts/base.html" %}
+
+
+{% block content %}
+
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="h3">Detail Message</p>
+                </div>
+
+            </div>
+        
+            {% for msg in msgs %}
+                <div class="col-sm-12">
+                    <p class="h6">{{msg.message}}</p>
+                </div>
+            
+            {% endfor %}
+            <div class="col-sm-12">
+                
+                <form method="POST" action="/admin/db_table/replymessage/">
+                    <input type="hidden" name="sender_id" value="{{sender_id}}" />
+                    <input type="hidden" name="reply_message_id" value="{{msg_id}}" />
+                    <input type="hidden" name="receiver_id" value="{{admin_id}}" />
+                    <div class="row">
+                        {% csrf_token %}
+                        <div class="col-sm-8"><input type="text" name="message" class="form-control" /></div>
+                        <div class="col-sm-4"><input type="submit" value="send" /></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    {% endblock %}
+
+
+

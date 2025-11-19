@@ -1,0 +1,170 @@
+{% extends "admin/layouts/base.html" %}
+{% block content %}
+<div class="row">
+	<div class="col-md-6 col-sm-6">
+		<h1 id="titleclass">Assian Handicap </h1>
+	</div>
+	<div class="col-md-6 col-sm-6 text-right">
+		<input class="btn btn-success" type=button value="Back" onClick="javascript:history.go(-1);">
+	</div>
+</div>
+<form id="OddsProbability" action="/admin/db_table/OddsProbability/" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+	<div class="row">
+		
+			<div class="col-md-12 col-sm-12">
+				<div class="row">
+					<div class="col-md-4 col-sm-4">
+						<select class="form-control" name="season" id="season" onchange="seasonbymatch(this)" >
+							<option value="">Select Season</option>
+							 {% for sd in season_detail %}
+							 	{% if sd.name != 'None' %}
+							 		<option value="{{sd.season_id}}" {% if sd.season_id == season_search %} selected="selected" {% endif %}>{{sd.name}}</option>
+							 	{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-md-4 col-sm-4">
+						<select class="form-control" name="league" id="league" onchange="leaguebymatch(this)" >
+							<option value="">Select League</option>
+							 {% for lg in league %}
+							 	{% if lg.name != 'None' %}
+							 		<option value="{{lg.league_id}}" {% if lg.league_id == league_search %} selected="selected" {% endif %}>{{lg.name}}</option>
+							 	{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-md-4 col-sm-4">
+						<select class="form-control" name="match" id="match" onchange="MatchData(this)" >
+							<option value="">Select Match</option>
+							 {% for md in matchdata %}
+							 	{% if md.match_name != 'None' %}
+							 		<option value="{{md.match_id}}" {% if md.match_id == match_search %} selected="selected" {% endif %}>{{md.match_name}}</option>
+							 	{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="row">
+				</div>
+			</div>
+			<div class="col-md-12 col-sm-12">
+				<div class="row">
+					<div class="col-md-4 col-sm-4">
+						<select class="form-control" name="ah_bets" id="ah_bets" >
+							<option value="">Select Asian Handicap Bets</option>
+							<option value="+0.25" {% if season_search == '+0.25' %} selected="selected" {% endif %}>+0.25</option>
+							<option value="-0.25" {% if season_search == '-0.25' %} selected="selected" {% endif %}>-0.25</option>
+							<option value="+0.5" {% if season_search == '+0.5' %} selected="selected" {% endif %}>+0.5</option>
+							<option value="-0.5" {% if season_search == '-0.5' %} selected="selected" {% endif %}>-0.5</option>
+							<option value="+0.75" {% if season_search == '+0.75' %} selected="selected" {% endif %}>+0.75</option>
+							<option value="-0.75" {% if season_search == '-0.75' %} selected="selected" {% endif %}>-0.75</option>
+							<option value="+1" {% if season_search == '+1' %} selected="selected" {% endif %}>+1</option>
+							<option value="-1" {% if season_search == '-1' %} selected="selected" {% endif %}>-1</option>
+							<option value="+1.25" {% if season_search == '+1.25' %} selected="selected" {% endif %}>+1.25</option>
+							<option value="-1.25" {% if season_search == '-1.25' %} selected="selected" {% endif %}>-1.25</option>
+							<option value="+1.5" {% if season_search == '+1.5' %} selected="selected" {% endif %}>+1.5</option>
+							<option value="-1.5" {% if season_search == '-1.5' %} selected="selected" {% endif %}>-1.5</option>
+							<option value="+1.75" {% if season_search == '+1.75' %} selected="selected" {% endif %}>+1.75</option>
+							<option value="-1.75" {% if season_search == '-1.75' %} selected="selected" {% endif %}>-1.75</option>
+							<option value="+2" {% if season_search == '+2' %} selected="selected" {% endif %}>+2</option>
+							<option value="-2" {% if season_search == '-2' %} selected="selected" {% endif %}>-2</option>
+						</select>
+					</div>
+					<div class="col-md-4 col-sm-4">
+						<select class="form-control" name="odds" id="odds">
+							<option value="">Select Odds</option>
+							<option value="home" {% if odds_value == 'home' %} selected="selected"{% endif %}>Home</option>
+							<option value="draw"{% if odds_value == 'draw' %} selected="selected" {% endif %}>Draw</option>
+							<option value="away"{% if odds_value == 'away' %} selected="selected" {% endif %}>Away</option>
+						</select>
+					</div>
+					<div class="col-md-4 col-sm-4">
+						<div class="row">
+							<div class="col-md-6 col-sm-6">
+								<input class="form-control" name="stack_value" id="stack_value" type=text value="{{stack_value}}" placeholder="Enters Stack Value">
+							</div>
+							<div class="col-md-6 col-sm-6">
+								<input class="form-control" name="odds_value" id="odds_value" type=text value="{{odds_value}}" placeholder="Enters Odds Value">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+
+		
+	</div>
+</form>
+<div class="col-md-12 col-sm-12"> 
+			<div class="row">
+				{% if 'backed_team_loses_profit_1goal' in result %} 
+					Backed Team Loses and Profit 1 Goal = {{result.backed_team_loses_profit_1goal}}
+				{% endif %}
+				{% if 'backed_team_loses_profit_2goal' in result %} 
+					Backed Team Loses and Profit 2 Goal = {{result.backed_team_loses_profit_2goal}}
+				{% endif %}
+				{% if 'backed_team_loses_profit_3goal' in result %} 
+					Backed Team Loses and Profit 3 Goal = {{result.backed_team_loses_profit_3goal}}
+				{% endif %}
+				{% if 'backed_team_draws_profit' in result %} 
+					Backed Team Draw Profit = {{result.backed_team_draws_profit}}
+				{% endif %}
+				{% if 'backed_team_loses_profit' in result %} 
+					Backed Team Loss Profit = {{result.backed_team_loses_profit}}
+				{% endif %}
+				{% if 'backed_team_wins_profit' in result %} 
+					Backed Team Win Profit = {{result.backed_team_wins_profit}}
+				{% endif %}
+			</div>
+</div>
+<script>
+
+	function leaguebymatch(selval){
+		var value = selval.options[selval.selectedIndex].value;
+		// alert(value)
+		var league = '?league='+value;
+		var season ='';
+		
+		if(document.getElementById("season").value!=''){
+			season = document.getElementById("season").value;
+			league = league+'&season='+season
+		}
+		
+		window.location.href=league;
+	}
+	function seasonbymatch(selval){
+		var value = selval.options[selval.selectedIndex].value;
+		// alert(value)
+		var season = '?season='+value;
+		var league ='';
+		//alert(document.getElementById("league").value);
+		if(document.getElementById("league").value!=''){
+			league = document.getElementById("league").value;
+			season = season+'&league='+league
+		}
+		
+		window.location.href=season;
+	}
+	function MatchData(selval){
+		var value = selval.options[selval.selectedIndex].value;
+		// alert(value)
+		var match = '?match='+value;
+		var league ='';
+		var season ='';
+		if(document.getElementById("season").value!=''){
+			season = document.getElementById("season").value;
+			match = match+'&season='+season
+		}
+		//alert(document.getElementById("league").value);
+		if(document.getElementById("league").value!=''){
+			league = document.getElementById("league").value;
+			match = match+'&league='+league
+		}
+		
+		
+		window.location.href=match;
+	}
+</script>
+{% endblock %}
+
+

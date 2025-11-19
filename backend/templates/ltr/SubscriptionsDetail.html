@@ -1,0 +1,50 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		
+		{% endblock styles %}
+
+			{% block body %}
+			
+
+			<!-- Row -->
+			<div class="row ">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">
+								Subscription Manager
+							</div>
+								
+						</div>
+						<div class="card-body pb-2">
+							<div class="row row-sm">
+								<div class="col-lg-6">
+									<div class="mb-6">
+										<label class="form-label">Name</label>
+										{{subscriptions_detail.name}}
+
+										
+
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="mb-6">
+										<label class="form-label">Price</label>
+										{{subscriptions_detail.price}}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/Row -->
+			
+			{% endblock body %}
+					
+		{% block scripts %}
+		
+		
+		{% endblock scripts %}

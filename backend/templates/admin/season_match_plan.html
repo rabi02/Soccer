@@ -1,0 +1,127 @@
+{% extends "admin/layouts/base.html" %}
+
+
+{% block content %}
+<div class="row">
+	<div class="col-md-6 col-sm-6">
+		<h1 id="titleclass">Season Match Detail </h1>
+	</div>
+	<div class="col-md-6 col-sm-6 text-right">
+		<input class="btn btn-success" type=button value="Back" onClick="javascript:history.go(-1);">
+	</div>
+</div>
+<div class="row">
+
+	<div class="col-md-6 col-sm-6">
+		
+		<select class="form-control" name="league" id="league" onchange="leaguebymatch(this)">
+			<option value="">Select League</option>
+			 {% for lg in leaguelist %}
+			 	{% if lg.name != 'None' %}
+			 		<option value="{{lg.league_id}}" {% if lg.league_id == league_search %} selected="selected" {% endif %}>{{lg.name}}</option>
+			 	{% endif %}
+			 {% endfor %}
+		</select>
+	</div>
+	<div class="col-md-6 col-sm-6">
+		<select class="form-control" name="season" id="season" onchange="seasonbymatch(this)">
+			<option value="">Select Season</option>
+			 {% for sjn in seasonlist %}
+			 	<option value="{{sjn.season_id}}" {% if sjn.season_id == season_search %} selected="selected"{% endif %}>{{sjn.name}}</option>
+			 {% endfor %}
+		</select>
+	</div>
+	<div class="col-md-6 col-sm-6"></div>
+	<div class="col-md-12 col-sm-12">
+		<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      <th>match id</th>
+		      <th>Season</th>
+		      <th>League</th>
+		      <th>Home Team</th>
+		      <th>Home Score</th>
+		      <th>Away Team</th>
+		      <th>Away Score</th>
+		      <th>Date</th>
+		      <th>Odds</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    {% for smp in smp_list %}
+		      <tr>
+		        <td>{{ smp.match_id }}</td>
+		        <td>{{ smp.season_name }}</td>
+		        <td>{{smp.league_name}}</td>
+		        <td>
+		        	<a href="/admin/db_table/playerdetail/{{smp.home_team_id}}/{{smp.match_id}}">{{smp.home_team_name}}</a>
+		        </td>
+		        <td>{{smp.total_home_score}}</td>
+		        <td>
+		        	<a href="/admin/db_table/playerdetail/{{smp.away_team_id}}/{{smp.match_id}}">{{smp.away_team_name}}</a>
+		        </td>
+		        <td>{{ smp.total_away_score }}</td>
+		        <td>{{ smp.date |date:"m-d-Y"}}</td>
+		        <td>
+		        	<a class="btn btn-success" href="/admin/db_table/odds-manager/{{smp.home_team_id}}/{{smp.away_team_id}}">View Odds</a>
+		        </td>
+		      </tr>
+		    {% endfor %}
+		  </tbody>
+		</table>
+
+		{% if smp_list.has_other_pages %}
+		  <ul class="pagination2">
+		    {% if smp_list.has_previous %}
+		      <li><a href="?page={{ smp_list.previous_page_number }}">&laquo;</a></li>
+		    {% else %}
+		      <li  class="  disabled"><span>&laquo;</span></li>
+		    {% endif %}
+		    {% for i in smp_list.paginator.page_range %}
+		      {% if smp_list.number == i %}
+		        <li class=" active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+		      {% else %}
+		        <li class=""><a href="?page={{ i }}">{{ i }}</a></li>
+		      {% endif %}
+		    {% endfor %}
+		    {% if smp_list.has_next %}
+		      <li class=""><a href="?page={{ smp_list.next_page_number }}">&raquo;</a></li>
+		    {% else %}
+		      <li class="  disabled"><span>&raquo;</span></li>
+		    {% endif %}
+		  </ul>
+		{% endif %}
+	</div>
+</div>
+<script>
+
+	function leaguebymatch(selval){
+		var value = selval.options[selval.selectedIndex].value;
+		// alert(value)
+		var league = '?league='+value;
+		var season ='';
+		
+		if(document.getElementById("season").value!=''){
+			season = document.getElementById("season").value;
+			league = league+'&season='+season
+		}
+		
+		window.location.href=league;
+	}
+	function seasonbymatch(selval){
+		var value = selval.options[selval.selectedIndex].value;
+		// alert(value)
+		var season = '?season='+value;
+		var league ='';
+		//alert(document.getElementById("league").value);
+		if(document.getElementById("league").value!=''){
+			league = document.getElementById("league").value;
+			season = season+'&league='+league
+		}
+		
+		window.location.href=season;
+	}
+</script>
+{% endblock %}
+
+

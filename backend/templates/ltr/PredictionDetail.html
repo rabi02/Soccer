@@ -1,0 +1,148 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		
+		{% endblock styles %}
+
+			{% block body %}
+			
+
+			<!-- Row -->
+			<div class="row ">
+				<div class="col-md-12">
+					<div class="card">
+						
+						<div class="card-header">
+							<div class="col-md-10 col-sm-10 ps-0">
+								<h3 class="card-title">Prediction</h3>
+							</div>
+							<div class="col-md-2 col-sm-2 text-end pe-0">
+								<input class="btn btn-success" type=button value="Back" onClick="javascript:history.go(-1);">
+							</div>
+						</div> 
+						<div class="card-body">
+							<div class="row">
+								<div class="col-lg-4">
+									<div class="table-responsive">
+										<table class="table transaction-table table-striped">
+											<tr>
+												<td class="font-weight-bold">Home Team</td>
+												<td>{{prediction.Home}}</td>
+												
+											</tr>
+											<tr>
+												<td class="font-weight-bold">Home Score</td>
+												<td>{{prediction.Home_score}}</td>
+												
+											</tr>
+											<tr>
+												<td class="font-weight-bold"> Home Handicap</td>
+												<td>{{prediction.home_handicap}}</td>
+												
+											</tr>
+										
+											<tr>
+												<td class="font-weight-bold">Probability</td>
+												<td colspan="3">{{prediction.home_handicap}}</td>
+												
+											</tr>
+											<tr>
+												<td class="font-weight-bold">Under 2.5 Goals Probability</td>
+												<td>{{prediction.under_2_5_goals_probability}}</td>
+												
+											</tr>
+											
+											<tr>
+												<td class="font-weight-bold">Under 2.5 Odds</td>
+												<td>{{prediction.under_2_5_odds}}</td>
+												
+												
+											</tr>
+											<tr>
+												<td class="font-weight-bold">Prediction</td>
+												<td colspan="3">{{prediction.prediction}}</td>
+												
+											</tr>
+										</table>
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="table-responsive">
+										<table class="table transaction-table table-striped">
+											<tr>
+												<td class="font-weight-bold">Away Team</td>
+												<td>{{prediction.Away}}</td>
+											</tr>
+											<tr>
+												<td class="font-weight-bold">Away Score</td>
+												<td>{{prediction.Away_score}}</td>
+											</tr>
+											<tr>
+												<td class="font-weight-bold"> Away Handicap</td>
+												<td>{{prediction.away_handicap}}</td>
+											</tr>
+											<tr>
+												<td class="font-weight-bold">Over 2.5 Goals Probability</td>
+												<td>{{prediction.over_2_5_goals_probability}}</td>
+											</tr>
+											<tr>
+												<td class="font-weight-bold">Over 2.5 Odds</td>
+												<td >{{prediction.over_2_5_odds}}</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="table-responsive">
+										<table class="table transaction-table table-striped" id="example2">
+											<thead>
+												<tr>
+													<th></th>
+													<th class="wd-15p border-bottom-0">Home</th>
+													<th class="wd-15p border-bottom-0">Draw</th>
+													<th class="wd-20p border-bottom-0">Away</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<th>Probability %</th>
+													<td>{{prediction.probability_percent_home_win}}</td>
+													<td>{{prediction.probability_percent_draw}}</td>
+													<td>{{prediction.probability_percent_away_win}}</td>
+												</tr>
+												<tr>
+													<th>Decimal Odds</th>
+													<td>{{prediction.predicted_decimal_odds_home_odds}}</td>
+													<td>{{prediction.predicted_decimal_odds_draw_odds}}</td>
+													<td>{{prediction.predicted_decimal_odds_away_odds}}</td>
+												</tr>
+												<tr>
+													<th>Fractional Odds</th>
+													<td>{{prediction.predicted_fractional_odds_home_odds}}</td>
+													<td>{{prediction.predicted_fractional_odds_draw_odds}}</td>
+													<td>{{prediction.predicted_fractional_odds_away_odds}}</td>
+												</tr>
+												<tr>
+													<th>American Odds</th>
+													<td>{{prediction.predicted_american_odds_home_odds}}</td>
+													<td>{{prediction.predicted_american_odds_draw_odds}}</td>
+													<td>{{prediction.predicted_american_odds_away_odds}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/Row -->
+			
+			{% endblock body %}
+					
+		{% block scripts %}
+		
+		
+		{% endblock scripts %}

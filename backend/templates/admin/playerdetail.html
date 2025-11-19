@@ -1,0 +1,88 @@
+{% extends "admin/layouts/base.html" %}
+
+
+{% block content %}
+<div class="row">
+	<div class="col-md-6 col-sm-6">
+		<h1 id="titleclass">Team Detail </h1>
+	</div>
+	<div class="col-md-6 col-sm-6 text-right">
+		<input class="btn btn-success" type=button value="Back" onClick="javascript:history.go(-1);">
+	</div>
+	<div class="col-md-12 col-sm-12">
+		
+		<table class="table table-bordered">
+		    <thead>
+			    <tr>
+					
+					<th colspan="2">Team Name</th>
+					<th>Total Match</th>
+					<th>Total Won</th>
+					<th>Total Draw</th>
+					<th>Total Loss</th>
+					<th>Probability</th>
+			    </tr>
+		  	</thead>
+			<tbody>
+				<tr>
+					<td><img height="40" width="40" src="{{teaminfo.logo_path}}"></td>
+					<td>{{teaminfo.name}}</td>
+					<td>{{teamlist.total_match}}</td>
+					<td>{{teamlist.total_win}}</td>
+					<td>{{teamlist.total_draw}}</td>
+					<td>{{teamlist.total_loss}}</td>
+					<td>W: {{teamlist.Pwin}} / D: {{teamlist.Pdraw}} / L: {{teamlist.Plost}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-12 col-sm-12">
+		<h1 id="titleclass">Player Info </h1>
+
+		<table class="table table-bordered">
+			<thead>
+			    <tr>
+			      <th>Image</th>
+			      <th>Player ID</th>
+			      <th>Name</th>
+			      <th>birthday</th>
+			      <th>nationality</th>
+			      <th>height</th>
+			      <th>weight</th>
+			      <th>foot</th>
+			      <th>View</th>
+			    </tr>
+		  	</thead>
+		  	<tbody>
+				{% for mtpi in matchteamplayerInfo %}
+					
+					{% for pl in mtpi.PlayerList %}
+
+					    <tr>
+					    	<td><img height="40" width="40" src="{{pl.img_src}}"></td>
+					     	<td>{{pl.player_id}}</td>
+					      	<td>{{pl.player_name}}</td>
+					      	<td>{{pl.birthday}}</td>
+					      	<td>{{pl.nationality}}</td>
+					      	<td>{{pl.height}}</td>
+					      	<td>{{pl.weight}}</td>
+					      	<td>{{pl.foot}}</td>
+					      	<td>
+					      		<a class="btn btn-success" href="/admin/db_table/singleplayerdetail/{{pl.player_id}}"> Detail</a>
+					      	
+					      	</td>
+					      	
+					    </tr>
+					    
+			    	{% endfor %}
+			    	
+			    {% endfor %}
+		    </tbody>
+		</table>
+		
+	</div>
+</div>
+
+{% endblock %}
+
+

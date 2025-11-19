@@ -1,0 +1,113 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Data table css -->
+		<link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.css" rel="stylesheet" />
+		<link href="{% static ''%}assets/plugins/datatable/css/buttons.bootstrap5.min.css"  rel="stylesheet">
+		<link href="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.css" rel="stylesheet" />
+
+		<!-- Slect2 css -->
+		<link href="{% static ''%}assets/plugins/select2/select2.min.css" rel="stylesheet" />
+		{% endblock styles %}
+
+						{% block body %}
+
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="col-md-10 col-sm-10 ps-0">
+										<h3 class="card-title">Excel / Json</h3>
+									</div>
+									<div class="col-md-2 col-sm-2 text-end pe-0">
+										<a href="/admin/db_table/Uploadexcel" class="btn btn-success">
+										Add Excel / Json +
+										</a>
+									</div> 
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-bordered text-nowrap" id="example2">
+											<thead class="thead-light">
+												<tr>
+													<th class="wd-50p border-bottom-0">League</th>
+													<th class="wd-15p border-bottom-0">Excel / Json URL</th>
+													<th class="wd-10p border-bottom-0">Date</th>
+													<th class="wd-25p border-bottom-0">Action</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for csv in excel_detail%}
+													<tr>
+														
+														<td>{{csv.league}}</td>
+														<td>
+															<a href="/media/{{csv.csv_file}}" target="_blank">{{csv.excel_file}}</a>
+														</td>
+														<td>{{csv.created_date}}</td>
+														
+														<td>
+															{% if csv.is_process %}
+																<span class="btn btn-success">Processed</span>
+
+															{% else %}
+															<a title="Edit" alt="Edit" href="/admin/db_table/EditCsv/{{csv.id}}">
+																<i class="fa fa-pencil-square-o" aria-label="fa fa-pencil-square-o"></i>
+															</a>
+															&nbsp;&nbsp;
+															<a class="btn btn-link" title="Process" alt="Process" href="/admin/db_table/PocessCSV/{{csv.id}}">
+																Process</i>
+															</a>
+															{% endif %}
+														</td>
+													</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endblock body %}
+					
+		{% block scripts %}
+		<!-- Data tables -->
+		<script src="{% static ''%}assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/jszip.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.html5.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.print.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/dataTables.responsive.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+		<script src="{% static ''%}assets/js/datatables.js"></script>
+
+		<!-- Select2 js -->
+		<script src="{% static ''%}assets/plugins/select2/select2.full.min.js"></script>
+		<script>
+			function runAction(keyname,news_id){
+				// alert(action)
+				var form = document.createElement('form');
+				document.body.appendChild(form);
+				form.method = 'post';
+				form.action = '/admin/db_table/NotificationAction';
+				
+				var input = document.createElement('input');
+				input.type = 'hidden';
+				input.name = 'action';
+				input.value = keyname;
+				form.appendChild(input);
+				var input1 = document.createElement('input');
+				input1.type = 'hidden';
+				input1.name = 'id';
+				input1.value = news_id;
+				form.appendChild(input1);
+				console.log(form)
+				form.submit();
+			}
+		</script>
+		{% endblock scripts %}

@@ -1,0 +1,186 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Morris Charts css -->
+		<link href="{% static ''%}assets/plugins/morris/morris.css" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+
+		<!--Daterangepicker css-->
+		<link href="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+		<style type="text/css">
+			#page-loader{
+			display: none;
+			padding-left: 300px;
+		}
+		.team_text {
+			width: 100px !important;
+			overflow: hidden !important;
+			white-space: nowrap !important;
+			text-overflow: ellipsis !important;
+		}
+		</style>
+		{% endblock styles %}
+		
+
+						{% block body %}
+						<!--Page header-->
+						<div class="page-header">
+							<div class="page-leftheader">
+								<h4 class="page-title">Match</h4>
+							</div>
+
+<form id="ViewMatchByDate" class="text-center border border-light" method="POST" action="/admin/db_table/FixtureList">
+							<div class="page-rightheader ms-auto d-lg-flex d-none">
+								
+									<div class="ms-5 mb-0">
+										<a class="btn btn-white date-range-btn" href="javascript:void(0)" id="daterange-btn">
+											<svg class="header-icon2 me-3" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
+												<path d="M5 8h14V6H5z" opacity=".3"/><path d="M7 11h2v2H7zm12-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-4 3h2v2h-2zm-4 0h2v2h-2z"/>
+											</svg> <span>Select Date
+											<i class="fa fa-caret-down"></i></span>
+										</a>
+									</div>
+								
+									<div class="ms-5 mb-0">
+										<select id="League" name="League" class="form-control SlectBox">
+											<option value="">Sort by league</option>
+											<option value="32">European premier league</option>
+											<option value="564">Spanish La Ligaaab</option>
+											<option value="384">Italian series A</option>
+											<option value="82">Bundesliga</option>
+											<option value="304">French le championnat ligue 1</option>
+											<option value="1114"> Copa America</option>
+										</select>
+									</div>
+								
+							</div>
+</form>
+							<!-- <div class="page-rightheader ms-auto d-lg-flex d-none">
+								<div class="col-xl-3 col-md-3 col-lg-12 border">
+									<form id="ViewMatchByDate" class="text-center border border-light" method="POST" action="/admin/db_table/ViewMatchByDate/">
+										<div class="card">
+											<div class="card-body">
+												<div class="ms-5 mb-0">
+													{% csrf_token %}
+													<input type="hidden" name="todate" id="todate">
+													<input type="hidden" name="fromdate" id="fromdate">
+													<a class="btn btn-white date-range-btn btn-block" href="javascript:void(0)" id="daterange-btn"><span>Select Date<i class="fa fa-caret-down"></i></span>
+													</a>
+												</div>
+												<br/>
+												<div class="ms-5 mb-0">
+													<select id="League" name="League" class="form-control SlectBox">
+														
+														<option value="">Sort by league</option>
+														<option value="32">European premier league</option>
+														<option value="564">Spanish La Ligaaab</option>
+														<option value="384">Italian series A</option>
+														<option value="82">Bundesliga</option>
+														<option value="304">French le championnat ligue 1</option>
+														<option value="1114"> Copa America</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div> -->
+						</div>
+						<!--End Page header-->
+
+						<!--Row-->
+						<div class="row">
+							
+							<div class="col-xl-12 col-md-12 col-lg-12">
+								<div class="row">
+									<div class="table-responsive">
+										<table class="table card-table table-vcenter text-nowrap mb-0" id="pageload">
+											<thead  class="bg-primary text-white">
+												<tr >
+													<th class="text-white">ID</th>
+													<th class="text-white">League</th>
+													<th class="text-white">Country</th>
+													<th class="text-white">Season</th>
+													<th class="text-white">Home Team</th>
+													<th class="text-white">Away Team</th>
+													<th class="text-white">Winner team</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for res in result %}
+												<tr>
+													<th scope="row">{{res.matchid}}</th>
+													<td><span class="team_text">{{res.league_name}}</span></td>
+													<td class="team_text">{{res.country_name}}</td>
+													<td class="team_text">{{res.season_name}}</td>
+													<td class="team_text">{{res.local_team_name}}</td>
+													<td class="team_text">{{res.visiter_team_name}}</td>
+													<td class="team_text">{{res.winner_team_name}}</td>
+													<td ><a href="/admin/db_table/ViewMatchStatistics/{{res.matchid}}" class="btn btn-cyan">View Details</a></td>
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+									<div id="page-loader">
+										<img height="80px" width="80px" src="/static/assets/images/svgs/loader.svg" alt="loader">
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<!--End row-->
+
+						
+						{% endblock body %}
+					
+		{% block scripts %}
+		<!--Moment js-->
+		<script src="{% static ''%}assets/plugins/moment/moment.js"></script>
+
+		<!-- Daterangepicker js-->
+		<script src="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<!-- <script src="{% static ''%}assets/js/daterange.js"></script> -->
+
+		<!--Chart js -->
+		<script src="{% static ''%}assets/plugins/chart/chart.min.js"></script>
+		<script src="{% static ''%}assets/plugins/chart/chart.extension.js"></script>
+
+		<!-- ECharts js-->
+		<script src="{% static ''%}assets/plugins/echarts/echarts.js"></script>
+		<script src="{% static ''%}assets/js/index2.js"></script>
+		<script>
+			//Date range as a button
+			$('#daterange-btn').daterangepicker({
+				ranges: {
+					'Today': [moment(), moment()],
+					'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+					'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+					'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+					'This Month': [moment().startOf('month'), moment().endOf('month')],
+					'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+				},
+				startDate: moment().subtract(29, 'days'),
+				endDate: moment()
+			}, function(start, end) {
+				console.log(start.format('YYYY-MM-DD'))
+				console.log(end.format('YYYY-MM-DD'))
+				$('#todate').val(start.format('YYYY-MM-DD'))
+				$('#fromdate').val(end.format('YYYY-MM-DD'))
+				$("#ViewMatchByDate").submit();
+				$('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+			})
+			$("#qbut1").click(function() {
+				$('#today').val('today');
+				$("#ViewMatchByDate").submit();
+			});
+			$("#League").change(function() {
+				console.log("rrrrrrrrr")
+				$("#ViewMatchByDate").submit();
+			});
+		</script>
+		{% endblock scripts %}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static%}
+<html lang="en" dir="ltr">
+<head>
+
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+    <meta content="Soccer Sets" name="description">
+    <meta content="SSoccer Sets" name="author">
+    <meta name="keywords" content="Soccer Sets"/>
+
+        {% include 'components/layouts/horizontal/styles.html' %}
+		{% block styles %}{% endblock styles %}
+
+	</head>
+
+    <body class="dark-mode">
+
+        <!---Global-loader-->
+        <div id="global-loader">
+            <img src="{% static 'assets/images/svgs/loader.svg'%}" alt="loader">
+        </div>
+
+        <div class="page">
+            <div class="page-main">
+
+                {% include 'components/layouts/horizontal/header.html' %}
+
+                {% include 'components/layouts/horizontal/centerlogo-header.html' %}
+
+                {% include 'components/layouts/horizontal/horizontal-main.html' %}
+
+                <div class="app-content page-body">
+                    <div class="container">
+
+                    	{% block body %}{% endblock body %}
+
+                    </div>
+                </div>
+			    <!-- main-content closed -->
+            </div>
+
+            {% block modal %}{% endblock modal %}
+
+            {% include 'components/footer.html' %}
+
+        </div>
+		<!-- End Page -->
+
+        {% include 'components/layouts/horizontal/scripts.html' %}
+		{% block scripts %}{% endblock scripts %}
+
+    </body>
+</html>

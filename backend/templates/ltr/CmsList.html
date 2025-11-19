@@ -1,0 +1,124 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Data table css -->
+		<link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.css" rel="stylesheet" />
+		<link href="{% static ''%}assets/plugins/datatable/css/buttons.bootstrap5.min.css"  rel="stylesheet">
+		<link href="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.css" rel="stylesheet" />
+
+		<!-- Slect2 css -->
+		<link href="{% static ''%}assets/plugins/select2/select2.min.css" rel="stylesheet" />
+		{% endblock styles %}
+
+						{% block body %}
+						
+						<!-- Row -->
+						<div class="row">
+							<div class="col-12">
+								
+
+								<!--div-->
+								<div class="card">
+									<div class="card-header">
+										<div class="col-md-10 col-sm-10 ps-0">
+											<h3 class="card-title">CMS List</h3>
+										</div>
+										<div class="col-md-2 col-sm-2 pe-0 text-end">
+											<a href="/admin/db_table/addNews" class="btn btn-success">
+											Add CMS +
+											</a>
+										</div>
+									</div> 
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="table table-bordered text-nowrap" id="example2">
+												<thead class="thead-light">
+													<tr>
+														<th class="wd-15p border-bottom-0">Title</th>
+														<th class="wd-15p border-bottom-0">Slug</th>
+														<th class="wd-10p border-bottom-0">Active</th>
+														<th class="wd-25p border-bottom-0">Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													{% for nws in cms%}
+														<tr>
+															<td>{{nws.title}}</td>
+															<td>{{nws.slug}}</td>
+															<td class="text-center">
+																{% if nws.is_published %}
+																	<a><img onclick="runAction('unpublish',{{nws.id}})" width="20" src="/static/admin/img/icon-yes.svg"></a>
+																{% else %}
+																	<a><img onclick="runAction('publish',{{nws.id}})" width="20" src="/static/admin/img/icon-no.svg"></a>
+																{% endif %}
+															</td>
+															<td>
+																<a title="Edit" alt="Edit" href="/admin/db_table/EditCms/{{nws.id}}">
+																	<i class="fa fa-pencil-square-o"  aria-label="fa fa-pencil-square-o"></i>
+																</a>
+																&nbsp;&nbsp;
+																<a 
+																onclick="runAction('delete',{{nws.id}})" title="Delete" alt="Delete" href="#">
+																	<i class="ion-trash-a"  aria-label="ion-trash-a"></i>
+																</a>
+																&nbsp;&nbsp;
+																<a title="Detail" alt="Detail" href="#">
+																	<i class="ion-navicon-round"  aria-label="ion-navicon-round"></i>
+																</a>
+															</td>
+														</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<!--/div-->
+								
+							</div>
+						</div>
+						<!-- /Row -->
+						{% endblock body %}
+					
+		{% block scripts %}
+		<!-- Data tables -->
+		<script src="{% static ''%}assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/jszip.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.html5.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.print.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/dataTables.responsive.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+		<script src="{% static ''%}assets/js/datatables.js"></script>
+
+		<!-- Select2 js -->
+		<script src="{% static ''%}assets/plugins/select2/select2.full.min.js"></script>
+		<script>
+			function runAction(keyname,news_id){
+				// alert(action)
+				var form = document.createElement('form');
+				document.body.appendChild(form);
+				form.method = 'post';
+				form.action = '/admin/db_table/CmsAction';
+				
+				var input = document.createElement('input');
+				input.type = 'hidden';
+				input.name = 'action';
+				input.value = keyname;
+				form.appendChild(input);
+				var input1 = document.createElement('input');
+				input1.type = 'hidden';
+				input1.name = 'id';
+				input1.value = news_id;
+				form.appendChild(input1);
+				console.log(form)
+				form.submit();
+			}
+		</script>
+		{% endblock scripts %}

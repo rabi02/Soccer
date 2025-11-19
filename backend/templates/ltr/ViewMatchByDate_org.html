@@ -1,0 +1,244 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Morris Charts css -->
+		<link href="{% static ''%}assets/plugins/morris/morris.css" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+
+		<!--Daterangepicker css-->
+		<link href="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+		<style>
+		.team_text {
+			display: block;
+			width: 100px;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			margin: auto;
+		}
+		.venue_text {
+			display: block;
+			width: 250px;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		#page-loader{
+			display: none;
+			padding-left: 300px;
+		}
+		</style>
+		{% endblock styles %}
+
+						{% block body %}
+						<!--Page header-->
+						<div class="page-header">
+							<div class="page-leftheader">
+								<h4 class="page-title">Upcoming Matches (7 Days)</h4>
+							</div>
+
+							<div class="page-rightheader ms-auto d-lg-flex d-none">
+								
+							</div>
+						</div>
+						<!--End Page header-->
+
+						<!--Row-->
+						<div class="row">
+							<div class="col-xl-12 col-md-12 col-lg-12 border">
+								<form id="ViewMatchByDate" class="text-center border border-light" method="POST" action="/admin/db_table/ViewMatchByDate/">
+								<div class="card">
+									<div class="card-body">
+										
+										<div class="ms-5 mb-0">
+											{% csrf_token %}
+											<input type="hidden" name="start_limit" id="start_limit" value="{{start_limit}}">
+											<input type="hidden" name="end_limit" id="end_limit" value="{{end_limit}}">
+
+											
+											<input type="hidden" name="todate" id="todate" value="{{todate}}">
+											<input type="hidden" name="fromdate" id="fromdate" value="{{fromdate}}">
+											<a class="btn btn-white date-range-btn btn-block" href="javascript:void(0)" id="daterange-btn"><span>Select Date<i class="fa fa-caret-down"></i></span>
+											</a>
+											
+										</div>
+										<br/>
+										<div class="ms-5 mb-0">
+											<input type="hidden" name="today" id="today">
+											<a href="javascript:void(0)" id="todaymatch" class="btn btn-warning btn-block">Today Match</a>
+
+										</div>
+
+										<br/>
+										<div class="ms-5 mb-0">
+											<select id="League" name="League" class="form-control SlectBox">
+												<!--placeholder-->
+												<option value="">Sort by league</option>
+												{% for lg in league %}
+                                                    <option {% if League == lg.league_id %} selected ="selected" {% endif %} value="{{lg.league_id}}"> {{lg.name}}</option>
+                                                {% endfor %}
+												
+											</select>
+										</div>
+										
+									</div>
+								</div>
+							</form>
+							</div>
+							<div class="col-xl-12 col-md-12 col-lg-12" id="pageload">
+								<div class="row" id="Newdata">
+									{% if final_res %}
+										{% for res in final_res %}
+
+										<div class="col-xl-4 col-lg-4 col-md-12">
+
+											<div class="card">
+												<div class="card-body">
+													<div class="row">
+														<div class="col-xl-5 col-lg-5 col-md-12 text-center">
+
+														
+															<img width="50" src="data:image/gif;base64,{{res.localteam.image}}" alt=""/>
+															<div class="mb-1 font-weight-bold team_text">{{res.localteam.name}}</div>
+														
+														</div>
+														<div class="col-xl-2 col-lg-2 col-md-12">
+															<br/>
+															<a href="/admin/db_table/HeadtoHeadView/{{res.match_id}}" >
+															<i class="fa fa-bar-chart-o" data-bs-toggle="tooltip" title="" data-bs-original-title="Statistics" aria-label="fa fa-bar-chart-o"></i>
+														</a>
+															
+														</div>
+														<div class="col-xl-5 col-lg-5 col-md-12 text-center">
+														
+															<img width="50" src="data:image/gif;base64,{{res.visitorteam.image}}}" alt=""/>
+															<div class="mb-1 team_text font-weight-bold">{{res.visitorteam.name}}</div>
+														
+														</div>
+													</div>
+													
+													<span class="mb-1 venue_text text-muted">
+														Venue:- {{res.venue}}
+													</span>
+													<span class="mb-1 text-muted text-right">
+														Time:- {{res.string_date}}:{{res.formated_time}}
+													</span>
+
+												</div>
+											</div>
+										</div>
+										{% endfor %}
+									{% endif %}
+									
+								</div>
+								<div id="page-loader">
+										<img height="80px" width="80px" src="/static/assets/images/svgs/loader.svg" alt="loader">
+									</div>
+							</div>
+						</div>
+						
+						<!--End row-->
+						
+						{% endblock body %}
+					
+		{% block scripts %}
+		<!--Moment js-->
+		<script src="{% static ''%}assets/plugins/moment/moment.js"></script>
+
+		<!-- Daterangepicker js-->
+		<script src="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<!-- <script src="{% static ''%}assets/js/daterange.js"></script> -->
+
+		<!--Chart js -->
+		<script src="{% static ''%}assets/plugins/chart/chart.min.js"></script>
+		<script src="{% static ''%}assets/plugins/chart/chart.extension.js"></script>
+
+		<!-- ECharts js-->
+		<script src="{% static ''%}assets/plugins/echarts/echarts.js"></script>
+		<script src="{% static ''%}assets/js/index2.js"></script>
+
+		<script>
+			//Date range as a button
+			$('#daterange-btn').daterangepicker({
+				ranges: {
+					'Today': [moment(), moment()],
+					'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+					'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+					'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+					'This Month': [moment().startOf('month'), moment().endOf('month')],
+					'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+				},
+				startDate: moment().subtract(29, 'days'),
+				endDate: moment()
+			}, function(start, end) {
+				console.log(start.format('YYYY-MM-DD'))
+				console.log(end.format('YYYY-MM-DD'))
+				$('#todate').val(start.format('YYYY-MM-DD'))
+				$('#fromdate').val(end.format('YYYY-MM-DD'))
+				$("#ViewMatchByDate").submit();
+				$('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+			})
+			$("#todaymatch").click(function() {
+				$('#today').val('today');
+				$("#ViewMatchByDate").submit();
+			});
+			$("#League").change(function() {
+				
+				$("#ViewMatchByDate").submit();
+			});
+
+			$(document).ready(function(){
+				
+				$('#pageload').bind('mousewheel', function(e){
+					if(e.originalEvent.wheelDelta /120 > 0) {
+						console.log('scrolling up !');
+					}
+					else{
+						if($('#page-loader').css('display') == 'none'){
+							$('#page-loader').show();
+							console.log('scrolling down !');
+							var todate = $("#todate").val();
+							var fromdate = $("#fromdate").val();
+							var end_limit = $("#end_limit").val();
+							var start_limit = $("#start_limit").val();
+							var League = $("#League").val();
+							var serializedData = {
+								'end_limit':end_limit,
+								'start_limit':start_limit,
+								'League':League,
+								'todate':todate,
+								'fromdate':fromdate,
+								};
+							console.log(serializedData)
+							$.ajax({
+								type: 'POST',
+								url: "/api/ajax/GetAjaxViewMatchByDate",
+								data: JSON.stringify(serializedData),
+								success: function (response) {
+									$('#page-loader').hide();
+									var htmldata = response.htmldata
+									$("#end_limit").val(response.end_limit);
+									$("#start_limit").val(response.start_limit);
+									for (let i = 0; i < htmldata.length; i++) {
+										$("#Newdata").append(
+											'<div class="col-xl-4 col-lg-4 col-md-12"><div class="card"><div class="card-body"><div class="row"><div class="col-xl-5 col-lg-5 col-md-12"><img width="50" height="50" src="data:image/gif;base64,'
+											+htmldata[i]["localteam_logo_path"]+'"><div class="mb-1 font-weight-bold team_text">'+htmldata[i]["localteam_name"]+'</div></div><div class="col-xl-2 col-lg-2 col-md-12"><br/><a href="/admin/db_table/HeadtoHeadView/'+htmldata[i]["match_id"]+'" ><i class="fa fa-bar-chart-o" data-bs-toggle="tooltip" title="" data-bs-original-title="Statistics" aria-label="fa fa-bar-chart-o"></i></a></div><div class="col-xl-5 col-lg-5 col-md-12"><img  width="50" height="50" src="data:image/gif;base64,'+htmldata[i]["visiterteam_logo_path"]+'"><div class="mb-1 team_text font-weight-bold">'+htmldata[i]["visiterteam_name"]+'</div></div></div><span class="mb-1 venue_text text-muted">Venue:- '+htmldata[i]["venue"]+'</span><span class="mb-1 text-muted text-right">Time:-  '+htmldata[i]["time_date"]+'</span></div></div></div>'
+
+										);
+									}
+								},
+								error: function (response) {
+								// alert the error if any error occured
+								alert(response["responseJSON"]["error"]);
+								}
+							})
+						}
+					}
+				});
+			});
+	    
+		</script>
+		{% endblock scripts %}

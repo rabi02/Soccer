@@ -1,0 +1,69 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		
+		{% endblock styles %}
+
+			{% block body %}
+			
+
+			<!-- Row -->
+			<div class="row ">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">
+								Affiliate Manager
+							</div>
+								
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<tr>
+										<td>
+											<strong>Name</strong>
+										</td>
+										<td>
+											{{user_detail.name}}
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Email</strong>
+										</td>
+										<td>	
+											{{user_detail.email}}
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Country</strong>
+										</td>
+										<td>
+											{{user_detail.country}}
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Phone</strong>
+										</td>
+										<td>
+											{{user_detail.phone}}
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/Row -->
+			
+			{% endblock body %}
+					
+		{% block scripts %}
+		
+		
+		{% endblock scripts %}

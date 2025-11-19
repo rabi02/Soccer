@@ -1,0 +1,74 @@
+{% extends "admin/layouts/base.html" %}
+
+
+{% block content %}
+<div class="row">
+	<div class="col-md-6 col-sm-6">
+		<h1 id="titleclass">Team Graph </h1>
+	</div>
+	<div class="col-md-6 col-sm-6 text-right">
+		<input class="btn btn-success" type=button value="Back" onClick="javascript:history.go(-1);">
+	</div>
+</div>
+<div class="row">
+
+	<div class="col-md-6 col-sm-6">
+		
+		<select class="form-control" name="team" id="team" onchange="teambymatch(this)">
+			<option value="">Select Team</option>
+			 {% for tl in teamlist %}
+			 	{% if tl.name != 'None' %}
+			 		<option value="{{tl.team_id}}" {% if tl.team_id == team_search %} selected="selected" {% endif %}>{{tl.name}}</option>
+			 	{% endif %}
+			 {% endfor %}
+		</select>
+	</div>
+	
+	
+	<div class="col-md-6 col-sm-6"></div>
+	<div class="col-md-12 col-sm-12">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+		{% if team_search > 0 %}
+			<canvas id="myChart" style="width:100%;max-width:90%"></canvas>
+		{% endif %}
+
+		<script>
+			var xValues = {{label|safe}};
+
+			new Chart("myChart", {
+				type: "line",
+				data: {
+					labels: xValues,
+					datasets: [{ 
+						data: {{data|safe}},
+						borderColor: "red",
+						fill: false
+					}]
+				},
+				options: {
+					legend: {display: false}
+				}
+			});
+		</script>
+
+		
+	</div>
+</div>
+<script>
+
+	function teambymatch(selval){
+		var value = selval.options[selval.selectedIndex].value;
+		var team = '?team='+value;
+		window.location.href=team;
+	}
+	function playerbymatch(selval){
+		var value = selval.options[selval.selectedIndex].value;
+		var player = '?player='+value;
+		team = document.getElementById("team").value;
+		param = player+'&team='+team
+		window.location.href=param;
+	}
+</script>
+{% endblock %}
+
+

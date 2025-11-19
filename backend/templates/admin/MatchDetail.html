@@ -1,0 +1,82 @@
+{% extends "admin/layouts/base.html" %}
+
+
+{% block content %}
+
+
+<div class="row">
+	<div class="col-md-6 col-sm-6">
+		<h1 id="titleclass">Match Details</h1>
+	</div>
+	
+</div>
+
+<div class="row">
+	{% if final_res %}
+		{% for res in final_res %}
+			
+			<div class="col-md-12 col-sm-12 padding-bottom">
+				
+				<div class="row border">
+					{% for lg in res.league_response%}
+						<div class="col-md-12 col-sm-12 padding-bottom text-center">
+							<img width="50" height="50" src="{{lg.logo_path}}">
+							{{lg.name}}
+						</div>
+					{% endfor %}
+					<div class="col-md-6 col-sm-6 border">
+						{% for rec in res.local_team_id_response.teams%}
+							<img width="50" height="50" src="{{rec.logo_path}}">
+							<div style="font-weight: 600;font-size: 10px;">{{rec.name}}</div>
+						{% endfor %}
+
+						<table class="table">
+							{% for lplr in res.localPlayer%}
+							<tr>
+								
+								<td>{{lplr.fullname}}</td>
+								<td>{{lplr.birthdate}}</td>
+								<td>{{lplr.nationality}}</td>
+							</tr>
+							{% endfor %}
+						</table>
+						{% if localteam_Detail%}
+							<img width="100%" src="../../../{{localteam_Detail}}" />
+						{% endif %}
+					</div>
+					
+					<div class="col-md-6 col-sm-6 border">
+						{% for vrec in res.visitorteam_id_response.teams%}
+							<img  width="50" height="50" src="{{vrec.logo_path}}"><br/>
+							<div style="font-weight: 600;font-size: 10px;">{{vrec.name}}</div>
+						{% endfor %}
+						<table class="table">
+							{% for vplr in res.visiterPlayer%}
+							<tr>
+								
+								<td>{{vplr.fullname}}</td>
+								<td>{{vplr.birthdate}}</td>
+								<td>{{vplr.nationality}}</td>
+							</tr>
+							{% endfor %}
+						</table>
+						{% if visitorteam_Detail%}
+							<img width="100%" src="../../../{{visitorteam_Detail}}" />
+						{% endif %}
+					</div>
+					
+				</div>
+
+			
+			<!-- {{res.local_team_id_response}}		
+			{{res.visitorteam_id_response.logo_path}} -->		
+			</div>
+		{% endfor %}
+	{% endif %}
+</div>
+
+
+
+{% endblock %}
+
+

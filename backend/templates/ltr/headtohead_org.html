@@ -1,0 +1,441 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+        <!---jvectormap css-->
+        <link href="{% static ''%}assets/plugins/jvectormap/jqvmap.css" rel="stylesheet" />
+
+        <!-- Data table css -->
+        <link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+        <!--Daterangepicker css-->
+        <link href="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+		{% endblock styles %}
+
+					{% block body %}
+                    <!--Page header-->
+                    <div class="page-header">
+                        <div class="page-leftheader">
+                            <h4 class="page-title">Probability</h4>
+                        </div>
+                    </div>
+                    <!--End Page header-->
+
+                    <!--Row-->
+                    {% if final_res %}
+						{% for res in final_res %}
+		                    <div class="card">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-xs-12 col-sm-6 col-lg-4">
+											<div class="offer offer-default">
+												<div class="shape">
+													<div class="shape-text" style="right: -37px !important;">
+														Home 
+													</div>
+												</div>
+													<div class="offer-content text-center">
+													{% for rec in res.localteam%}
+														<div class="team-icon-logo">
+															<img width="50" src="data:image/gif;base64,{{rec.image}}" alt=""/>
+														</div>
+															<h3 class="lead font-weight-semibold">{{rec.name}}</h3>
+													{% endfor %}
+													
+													<p class="mb-0">
+														<span class="badge bg-primary">W</span>
+														<span class="badge bg-warning">D</span>
+														<span class="badge bg-danger">L</span>
+													</p>
+													<p class="mb-0">
+														<span class="badge text-green">{{headtohead.result.localteamwin}}</span>
+														<span class="badge text-yellow">
+														{{headtohead.result.draw}}</span>
+														<span class="badge text-red">{{headtohead.result.localteamloss}}</span>
+														
+													</p>
+												</div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6 col-lg-4">
+											<div class="offer offer-success">
+												<div class="offer-content" style="padding: 0px!important;height: 177px;">
+													
+													<div class="row mb-3">
+														<div class="col-xl-2 col-lg-2 col-md-12" >
+														</div>
+														
+														<div class="col-xl-10 col-lg-10 col-md-12" >
+															<h4 class="lead font-weight-semibold mt-3">{{res.match_name}}</h4>
+															<p class="mb-2">Country:{{res.file_group}}</p>
+															<p class="mb-2">Venue:{{res.venue}}</p>
+															<p class="mb-2">{{res.string_date}}:{{res.formated_time}} </p>
+															<h5 class="mb-2">Predictions & H2H</h5>
+														</div>
+													
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6 col-lg-4">
+											<div class="offer offer-radius offer-primary">
+												<div class="shape">
+													<div class="shape-text" style="right: -37px !important;">
+														Away
+													</div>
+												</div>
+												<div class="offer-content text-center">
+													{% for vrec in res.visitorteam %}
+														<div class="team-icon-logo">
+															<img width="50" src="data:image/gif;base64,{{vrec.image}}" alt=""/>
+														</div>
+															<h3 class="lead font-weight-semibold">{{vrec.name}}</h3>
+													{% endfor %}
+																									
+													<p class="mb-0">
+														<span class="badge bg-primary">W</span>
+														<span class="badge bg-warning">D</span>
+														<span class="badge bg-danger">L</span>
+													</p>
+													<p class="mb-0">
+														<span class="badge text-green">{{headtohead.result.visitorteamwin}}</span>
+														<span class="badge text-yellow">
+														{{headtohead.result.draw}}</span>
+														<span class="badge text-red">{{headtohead.result.visitorteamloss}}</span>
+														
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-body">
+									<div class="tags"> 
+										<a href="/admin/db_table/HeadtoHeadView/{{match_id}}" class="btn btn-outline-secondary me-2">Stats</a>
+										<a href="/admin/db_table/prediction/{{match_id}}" class="btn btn-outline-secondary me-2">Prediction</a>
+										<a href="/admin/db_table/tableData/{{match_id}}" class="btn btn-outline-secondary me-2">Tables</a>
+										<a href="/admin/db_table/OddsData/{{match_id}}" class="btn btn-outline-secondary me-2">Odds</a>
+									</div>
+								</div>
+							</div>
+	                    	<div class="row">
+                    			<div class="col-xl-6 col-md-6">
+                    				<div class="card">
+                    					<div class="card-header">
+                    						<h3 class="card-title">Final Result</h3>
+                    					</div>
+                    					<div class="card-body">
+                    						<div class="row">
+	                    						<div class="col-12 col-sm-12 col-lg-12">
+	                    							<div class="card">
+				                        				<div class="card-body text-center">
+						                    				{% for prd in prediction%}
+								                        	<h3 class="mb-0">{{prd.Predictions}}</h3>
+								                        	<p class="mb-2">
+								                        		<b>Predictions-</b> 
+								                        		{{prd.Home}} 
+								                        		<b>Vs</b> 
+										                        {{prd.Away}}
+										                    </p>
+								                        	<h5 class="mb-0">Probability % :  {{prd.Probability}}</h5>
+								                        </div>
+								                    </div>
+						                        </div>
+				                        		<div class="col-6 col-sm-6 col-lg-6">
+				                        			<div class="card">
+				                        				<div class="card-body text-center">
+				                        					<div class="h2 m-0 font-weight-bold">
+				                        						{{prd.over_2_5_goals_probability}}%<span class="badge text-green">Over 2.5</span>
+				                        					</div>
+				                        					<div class="text-muted mb-0"> 
+																{% for lg in res.league_response%}
+																	{{lg.name}} Table
+																{% endfor %}
+				                        					</div> 
+				                        				</div> 
+				                        			</div> 
+				                        		</div>
+				                        		<div class="col-6 col-sm-6 col-lg-6">
+				                        			<div class="card">
+				                        				<div class="card-body text-center">
+				                        					<div class="h2 m-0 font-weight-bold">
+				                        						{{prd.under_2_5_goals_probability}}%<span class="badge text-green">Under 2.5</span>
+				                        					</div>
+				                        					<div class="text-muted mb-0"> 
+																{% for lg in res.league_response%}
+																	{{lg.name}} Table
+																{% endfor %}
+				                        					</div> 
+				                        				</div> 
+				                        			</div> 
+				                        		</div>
+				                        		<div class="col-6 col-sm-6 col-lg-6">
+				                        			<div class="card">
+				                        				<div class="card-body text-center">
+				                        					<div class="h2 m-0 font-weight-bold">
+				                        						{{prd.over_2_5_odds}}<span class="badge text-green">Over 2.5 Odds</span>
+				                        					</div>
+				                        					<div class="text-muted mb-0"> 
+																{% for lg in res.league_response%}
+																	{{lg.name}} Table
+																{% endfor %}
+				                        					</div> 
+				                        				</div> 
+				                        			</div> 
+				                        		</div>
+				                        		<div class="col-6 col-sm-6 col-lg-6">
+				                        			<div class="card">
+				                        				<div class="card-body text-center">
+				                        					<div class="h2 m-0 font-weight-bold">
+				                        						{{prd.under_2_5_odds}}<span class="badge text-green">Under 2.5 Odds</span>
+				                        					</div>
+				                        					<div class="text-muted mb-0"> 
+																{% for lg in res.league_response%}
+																	{{lg.name}} Table
+																{% endfor %}
+				                        					</div> 
+				                        				</div> 
+				                        			</div> 
+				                        		</div>
+				                        		<div class="col-6 col-sm-6 col-lg-6">
+				                        			<div class="card">
+				                        				<div class="card-body text-center">
+				                        					<div class="m-0 font-weight-bold">
+				                        						{{prd.home_handicap}}
+				                        					</div>
+				                        					<div class="text-muted mb-0"> 
+				                        						<span class="badge text-green">{{localteam.name}}</span>Asian Handicap 
+				                        					</div> 
+				                        				</div> 
+				                        			</div> 
+				                        		</div>
+				                        		<div class="col-6 col-sm-6 col-lg-6">
+				                        			<div class="card">
+				                        				<div class="card-body text-center">
+				                        					<div class="m-0 font-weight-bold">
+				                        						{{prd.away_handicap}}
+				                        					</div>
+				                        					<div class="text-muted mb-0"> 
+				                        						<span class="badge text-green">{{visiterteam.name}}</span>Asian Handicap
+				                        					</div> 
+				                        				</div> 
+				                        			</div> 
+				                        		</div>
+				                        	</div>
+		                        		</div>
+                    				</div>
+		                        </div>
+		                    	{% endfor %}
+			                	<div class="col-xl-6 col-md-6">
+			                		<div class="card">
+                        				<div class="card-body p-0">
+		                        			<div class="table-responsive">
+		                        				<table class="table table-striped card-table table-vcenter text-nowrap mb-0">
+			                        				<thead class="thead-light">
+			                        					<tr>
+			                        						<th>Data</th>
+			                        						<th>{{final_h2h.localteam.name}}</th>
+			                        						<th>{{final_h2h.visiterteam.name}}</th>
+			                        					</tr>
+			                        				</thead>
+			                        				<tbody>
+			                   			                <tr>
+			                        						<th scope="row">Rank</th>
+			                        						<td>{{final_h2h.localteam.rank_total}}</td>
+			                        						<td>{{final_h2h.visiterteam.rank_total}}</td>
+			                        					</tr>
+			                        					<tr>
+			                        						<th scope="row">Clean Sheet</th>
+			                        						<td>{{final_h2h.localteam.clean_sheet_total}}</td>
+			                        						<td>{{final_h2h.visiterteam.clean_sheet_total}}</td>
+			                        					</tr>
+			                        					
+			                        					<tr>
+			                        						<th scope="row">Avg Goal Per Game</th>
+			                        						<td>{{final_h2h.localteam.avg_goals_per_game_conceded_total}}</td>
+			                        						<td>{{final_h2h.visiterteam.avg_goals_per_game_conceded_total}}</td>
+			                        					</tr>
+			                        					<tr>
+			                        						<th scope="row">Avg Goal Score</th>
+			                        						<td>{{final_h2h.localteam.avg_goals_per_game_scored_total}}</td>
+			                        						<td>{{final_h2h.visiterteam.avg_goals_per_game_scored_total}}</td>
+			                        					</tr>
+			                        					
+			                        				</tbody>
+		                        				</table>
+		                        			</div>
+		                        		</div>
+		                        	</div>
+                        		</div>
+                        	</div>
+                        	<div class="row">
+                        		<div class="col-xl-6 col-md-6">
+                        			<div class="card">
+                        				<div class="card-header">
+                        					<h3 class="card-title">Head To Head Matches</h3>
+                        				</div>
+                        				<div class="card-body">
+				                     		<div class="row">
+				                     			<div class="col-xl-12 col-md-12 col-lg-12 text-center">
+				                     				<b>{{headtohead.result.totalmatches}}</b><br/>Matches
+				                     			</div>
+				                     		</div>
+					                     	<div class="row">
+					                     		<div class="col-xl-3 col-md-12 col-lg-12 text-center">
+					                     			<img width="50" src="data:image/gif;base64,{{final_h2h.localteam.image}}" alt=""/>
+													<h3 class="lead font-weight-semibold">{{localteam.name}}</h3>
+													<p class="mb-0">
+														({{headtohead.probability.localteamwin}}%)
+													</p>
+					                     		</div>
+					                     		<div class="col-xl-6 col-md-12 col-lg-12 text-center">
+					                     			<br/><br/>
+													<div class="progress progress-sm mb-5">
+														<div alt="Home Team win :- {{headtohead.probability.localteamwin}}"
+														title="Home Team win :- {{headtohead.probability.localteamwin}}"  class="progress-bar bg-success" style="width: {{headtohead.probability.localteamwin}}%"></div>
+														<div alt="Draw :- {{headtohead.probability.draw}}"
+														title="Draw :- {{headtohead.probability.draw}}" class="progress-bar bg-warning" style="width: {{headtohead.probability.draw}}%"></div>
+														<div lt="Away Team win :- {{headtohead.probability.visitorteamwin}}"
+														title="Away Team win :- {{headtohead.probability.visitorteamwin}}" class="progress-bar bg-danger" style="width: {{headtohead.probability.visitorteamwin}}%"></div>
+													</div>
+					                     		</div>
+					                     		<div class="col-xl-3 col-md-12 col-lg-12 text-center">
+					                     			<img width="50" src="data:image/gif;base64,{{final_h2h.visiterteam.image}}" alt=""/>
+													<h3 class="lead font-weight-semibold">{{visiterteam.name}}</h3>
+														<p class="mb-0">
+														({{headtohead.probability.visitorteamwin}}%)
+														</p>
+					                     		</div>
+					                     	</div>
+					                    </div>
+					                </div>
+				                </div>
+			                     	<!-- <div class="card-body">
+	                        			<h3 class="card-title">Loss Prediction</h3>
+	                        			
+			                     		<div class="row">
+			                     			<div class="col-xl-12 col-md-12 col-lg-12 text-center"><b>{{headtohead.result.totalmatches}}</b><br/>Matches</div>
+			                     		</div>
+				                     	<div class="row">
+				                     		<div class="col-xl-3 col-md-12 col-lg-12">
+				                     			<img width="50" height="50" src="{{localteam.logo_path}}">
+												<h3 class="lead font-weight-semibold">{{localteam.name}}</h3>
+												<p class="mb-0">
+													({{headtohead.probability.localteamloss}}%)
+												</p>
+				                     		</div>
+				                     		<div class="col-xl-6 col-md-12 col-lg-12">
+				                     			<br/><br/>
+												<div class="progress progress-sm mb-5">
+													<div alt="Home Team Loss :- {{headtohead.probability.localteamloss}}"
+													title="Home Team Loss :- {{headtohead.probability.localteamloss}}"  class="progress-bar bg-success" style="width: {{headtohead.probability.localteamloss}}%"></div>
+													<div alt="Draw :- {{headtohead.probability.draw}}"
+													title="Draw :- {{headtohead.probability.draw}}" class="progress-bar bg-warning" style="width: {{headtohead.probability.draw}}%"></div>
+													<div lt="Away Team Loss :- {{headtohead.probability.visitorteamloss}}"
+													title="Away Team Loss :- {{headtohead.probability.visitorteamloss}}" class="progress-bar bg-danger" style="width: {{headtohead.probability.visitorteamloss}}%"></div>
+												</div>
+				                     		</div>
+				                     		<div class="col-xl-3 col-md-12 col-lg-12">
+				                     			<img width="50" height="50" src="{{visiterteam.logo_path}}">
+												<h3 class="lead font-weight-semibold">{{visiterteam.name}}</h3>
+													<p class="mb-0">
+													({{headtohead.probability.visitorteamloss}}%)
+													</p>
+				                     		</div>
+				                     	</div>
+				                     </div> -->
+		                        <div class="col-md-6">
+		                        	<div class="card">
+										<div class="card-header">
+											<h3 class="card-title">{{res.match_name}} Table</h3>
+										</div>
+		                        		<div class="card-body p-0">
+		                        			<div class="table-responsive">
+		                        				<table class="table table-striped card-table table-vcenter text-nowrap mb-0 mt-2">
+			                        				<thead class="thead-light">
+			                        					<tr>
+			                        						<th>Team</th>
+			                        						<th>Win</th>
+			                        						<th>Draw</th>
+			                        						<th>Lost</th>
+			                        						<th>GF</th>
+			                        						<th>GA</th>
+			                        					</tr>
+			                        				</thead>
+			                        				<tbody>
+			                        					{% for tm in teamDetail%}
+			                        					<tr>
+			                        						<th scope="row" style="overflow: hidden;">{{tm.name}}
+
+			                        						</th>
+			                        						<td>{{tm.win_total}}</td>
+			                        						<td>{{tm.draw_total}}</td>
+			                        						<td>{{tm.lost_total}}</td>
+			                        						<td>{{tm.goals_for_total}}</td>
+			                        						<td>{{tm.goals_against_home}}</td>
+			                        					</tr>
+			                        					{% endfor %}
+			                        				</tbody>
+		                        				</table>
+		                        			</div>
+		                        		</div>
+				                    </div> 
+		                        </div>
+		                    </div>
+		            	{% endfor %}
+					{% endif %}
+
+                    
+                    {% endblock body %}
+					
+		{% block scripts %}
+        <!-- ECharts js -->
+        <script src="{% static ''%}assets/plugins/echarts/echarts.js"></script>
+
+        <!-- Peitychart js-->
+        <script src="{% static ''%}assets/plugins/peitychart/jquery.peity.min.js"></script>
+        <script src="{% static ''%}assets/plugins/peitychart/peitychart.init.js"></script>
+
+        <!-- Apexchart js-->
+        <script src="{% static ''%}assets/js/apexcharts.js"></script>
+
+        <!--Moment js-->
+        <script src="{% static ''%}assets/plugins/moment/moment.js"></script>
+
+        <!-- Daterangepicker js-->
+        <script src="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+        <script src="{% static ''%}assets/js/daterange.js"></script>
+
+        <!---jvectormap js-->
+        <script src="{% static ''%}assets/plugins/jvectormap/jquery.vmap.js"></script>
+        <script src="{% static ''%}assets/plugins/jvectormap/jquery.vmap.world.js"></script>
+        <script src="{% static ''%}assets/plugins/jvectormap/jquery.vmap.sampledata.js"></script>
+
+        <!-- Index js-->
+        <script src="{% static ''%}assets/js/index1.js"></script>
+
+        <!-- Data tables js-->
+        <script src="{% static ''%}assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/jszip.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/buttons.html5.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/buttons.print.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/dataTables.responsive.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+        <script src="{% static ''%}assets/js/datatables.js"></script>
+
+        <!--Counters -->
+        <script src="{% static ''%}assets/plugins/counters/counterup.min.js"></script>
+        <script src="{% static ''%}assets/plugins/counters/waypoints.min.js"></script>
+
+        <!--Chart js -->
+        <script src="{% static ''%}assets/plugins/chart/chart.bundle.js"></script>
+        <script src="{% static ''%}assets/plugins/chart/utils.js"></script>
+		{% endblock scripts %}

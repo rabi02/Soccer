@@ -1,0 +1,83 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		
+		{% endblock styles %}
+
+			{% block body %}
+			
+
+			<!-- Row -->
+			<div class="row ">
+				<div class="col-md-12">
+					<div class="card">
+						
+						<div class="row">
+							<div class="col-md-10 col-sm-10 card-header" style="padding-left:30px;">
+								<h3 class="card-title">Payment Detail</h3>
+							</div>
+							<div class="col-md-2 col-sm-2 card-header">
+								<input class="btn btn-warning" type=button value="Back" onClick="javascript:history.go(-1);">
+							</div>
+						</div> 
+						<div class="card-body pb-2">
+							<div class="row row-sm">
+								<div class="col-lg-6">
+									<div class="mb-6">
+										<label class="form-label">User Name</label>
+										{{payment_detail.username}}
+									</div>
+									<div class="mb-6">
+										<label class="form-label">Payment Status</label>
+										{{payment_detail.payment_status}}
+									</div>
+									<div class="mb-6">
+										<label class="form-label">Currency</label>
+										{{payment_detail.currency_code}}
+									</div>
+									<div class="mb-6">
+										<label class="form-label">Subscribe</label>
+										{{payment_detail.subscriptions}}
+									</div>
+									<div class="mb-6">
+										<label class="form-label">Payer Mail</label>
+										{{payment_detail.payer_email}}
+									</div>
+									
+								</div>
+								<div class="col-lg-6">
+									<div class="mb-6">
+										<label class="form-label">Transaction Id</label>
+										{{payment_detail.transaction_id}}
+									</div>
+									<div class="mb-6">
+										<label class="form-label">Merchant Id</label>
+										{{payment_detail.merchant_id}}
+									</div>
+									<div class="mb-6">
+										<label class="form-label">Amount</label>
+										{{payment_detail.amount}}
+									</div>
+									<div class="mb-6">
+										<label class="form-label">Shipping Name</label>
+										{{payment_detail.shipping_name}}
+									</div>
+									<div class="mb-6">
+										<label class="form-label">Payment Date</label>
+										{{payment_detail.date_of_payment}}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/Row -->
+			
+			{% endblock body %}
+					
+		{% block scripts %}
+		
+		
+		{% endblock scripts %}

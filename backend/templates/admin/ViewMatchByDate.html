@@ -1,0 +1,103 @@
+{% extends "admin/layouts/base.html" %}
+
+
+{% block content %}
+
+<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" href="https://www.jqueryscript.net/demo/Lightweight-jQuery-Date-Input-Picker/themes/default.date.css">
+<link rel="stylesheet" href="https://www.jqueryscript.net/demo/Lightweight-jQuery-Date-Input-Picker/themes/default.time.css">
+<link rel="stylesheet" href="https://www.jqueryscript.net/demo/Lightweight-jQuery-Date-Input-Picker/themes/default.css">
+<div class="row">
+	<div class="col-md-6 col-sm-6">
+		<h1 id="titleclass">Get Match Details</h1>
+	</div>
+	
+</div>
+<form class="text-center border border-light" method="POST" action="/admin/db_table/ViewMatchByDate/">
+	{% csrf_token %}
+	<div class="row border">
+		<div class="col-md-4 col-sm-4">
+			<input id="input_01" class="datepicker" id="date1" name="date1" type="text" data-value="0000-00-00">
+		</div>
+		<div class="col-md-1 col-sm-1">
+			<strong>To</strong>
+		</div>
+		<div class="col-md-4 col-sm-4">
+			<input id="input_01" class="datepicker" id="date2" name="date2" type="text" data-value="0000-00-00">
+		</div>
+		<div class="col-md-1 col-sm-1">
+			<input type="submit" class="btn" value="Go" id="go" name="Go">
+		</div>
+	</div>
+</form>
+
+
+<div class="row">
+	{% if final_res %}
+		{% for res in final_res %}
+			<div class="col-md-3 col-sm-3 padding-bottom">
+				<div class="row border">
+					<div class="col-md-6 col-sm-6">
+						{% for rec in res.local_team_id_response.teams%}
+							<img width="50" height="50" src="{{rec.logo_path}}">
+							<div style="font-weight: 600;font-size: 10px;">{{rec.name}}</div>
+						{% endfor %}
+					</div>
+					
+					<div class="col-md-6 col-sm-6">
+						{% for vrec in res.visitorteam_id_response.teams%}
+							<img  width="50" height="50" src="{{vrec.logo_path}}"><br/>
+							<div style="font-weight: 600;font-size: 10px;">{{vrec.name}}</div>
+						{% endfor %}
+					</div>
+					<div class="col-md-12 col-sm-12 text-center">
+						<a style="font-weight: 600;font-size: 10px;" href="/admin/db_table/matchDetail/{{res.matchid}}" >Detail</a>
+					</div>
+				</div>
+
+			
+			<!-- {{res.local_team_id_response}}		
+			{{res.visitorteam_id_response.logo_path}} -->		
+			</div>
+		{% endfor %}
+	{% endif %}
+</div>
+ <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+<script src="https://www.jqueryscript.net/demo/Lightweight-jQuery-Date-Input-Picker/picker.js"></script>
+<script src="https://www.jqueryscript.net/demo/Lightweight-jQuery-Date-Input-Picker/picker.date.js"></script>
+<script src="https://www.jqueryscript.net/demo/Lightweight-jQuery-Date-Input-Picker/picker.time.js"></script>
+<script src="https://www.jqueryscript.net/demo/Lightweight-jQuery-Date-Input-Picker/legacy.js"></script>
+<script type="text/javascript">
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10) {
+            dd='0'+dd;
+        }
+        if(mm<10) {
+            mm='0'+mm;
+        }
+        today = dd+'/'+mm+'/'+yyyy;
+        
+        var $input = $( '.datepicker' ).pickadate({
+            formatSubmit: 'yyyy-mm-dd',
+            //editable: true,
+            closeOnSelect: false,
+            closeOnClear: false,
+        })
+
+        var picker = $input.pickadate('picker')
+    </script>
+    <script type="text/javascript">
+		$("#go").submit(function() {
+			/* Do Something */
+			return false;
+		});
+		
+    </script>
+   
+{% endblock %}
+
+

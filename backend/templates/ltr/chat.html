@@ -1,0 +1,113 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		{% endblock styles %}
+
+					{% block body %}
+                    <!--Page header-->
+                    <div class="page-header">
+                        <div class="page-leftheader">
+                            <h4 class="page-title">Chat</h4>
+                        </div>
+                        <div class="page-rightheader ms-auto d-lg-flex d-none">
+                            
+                        </div>
+                    </div>
+                    <!--End Page header-->
+
+                    <!-- Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bootstrap snippet card overflow-hidden bg-transparent">
+                                
+                                    
+                                    <div class="ms-body">
+                                        <div class="action-header clearfix">
+                                            
+                                            <div class="float-start hidden-xs d-flex ms-6 chat-user">
+                                                
+                                                <div class="align-items-center mt-2">
+                                                    <span class="font-weight-bold">{{recipant.username}}</span>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="chat-body-style" id="ChatBody">
+                                            {% if detail %}
+                                            {% for dtl in detail %}
+                                                {% if recipant.id == dtl.sender %}
+                                                <div class="message-feed media">
+                                                    <div class="float-start pe-2">
+                                                        {{dtl.sendername}}
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="mf-content">
+                                                            {{dtl.message}}
+                                                        </div>
+                                                        <small class="mf-date"><i class="fa fa-clock-o"></i> {{dtl.created_date}}</small>
+                                                    </div>
+                                                </div>
+                                                {% else %}
+                                                <div class="message-feed right">
+                                                    <div class="float-end ps-2">
+                                                        Admin
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="mf-content">
+                                                            {{dtl.message}}
+                                                        </div>
+                                                        <small class="mf-date"><i class="fa fa-clock-o"></i> {{dtl.created_date}}</small>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% endif %}
+
+
+                                           
+                                        </div>
+                                        <div class="msb-reply">
+
+                                            <textarea id="message1" name="message1" placeholder="What's on your mind..."></textarea>
+                                            <button onclick="saveMsg()"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 8.25l7.51 1-7.5-3.22zm.01 9.72l7.5-3.22-7.51 1z" opacity=".3"/><path d="M2.01 3L2 10l15 2-15 2 .01 7L23 12 2.01 3zM4 8.25V6.03l7.51 3.22-7.51-1zm.01 9.72v-2.22l7.51-1-7.51 3.22z"/></svg></button>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Row-->
+                    {% endblock body %}
+					
+		{% block scripts %}
+        <!-- Chat js-->
+        <script src="{% static ''%}assets/js/chat.js"></script>
+        <script>
+            function saveMsg(){
+                // alert(action)
+                message = document.getElementById('message1');
+                var form = document.createElement('form');
+                document.body.appendChild(form);
+                form.method = 'post';
+                form.action = '/admin/db_table/replymessage';
+                
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'message';
+                input.value = message.value;
+                form.appendChild(input);
+                var input1 = document.createElement('input');
+                input1.type = 'hidden';
+                input1.name = 'receiver_id';
+                input1.value = "{{recipant.id}}";
+                form.appendChild(input1);
+                var input2 = document.createElement('input');
+                input2.type = 'hidden';
+                input2.name = 'sender_id';
+                input2.value ="{{current_user_id}}";
+                form.appendChild(input2);
+                form.submit();
+            }
+        </script>
+		{% endblock scripts %}

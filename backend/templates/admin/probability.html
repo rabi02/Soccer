@@ -1,0 +1,35 @@
+{% extends "admin/layouts/base.html" %}
+
+
+{% block content %}
+<div class="row">
+	<h1 id="titleclass">Probability </h1>
+	<div class="col-md-12 col-sm-12">
+		<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      <th>Team Name</th>
+		      <th>Total Match</th>
+		      <th>Total Won</th>
+		      <th>Total Draw</th>
+		      <th>Total Loss</th>
+		      <th>Probability</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	<tr>
+		  		<td>{{teamlist.team_name}}</td>
+		  		<td>{{teamlist.total_match}}</td>
+		  		<td>{{teamlist.total_win}}</td>
+		  		<td>{{teamlist.total_draw}}</td>
+		  		<td>{{teamlist.total_loss}}</td>
+		  		<td>W: {{teamlist.Pwin}} / D: {{teamlist.Pdraw}} / L: {{teamlist.Plost}}</td>
+		  	</tr> 
+		  </tbody>
+		</table>
+	</div>
+</div>
+
+{% endblock %}
+
+

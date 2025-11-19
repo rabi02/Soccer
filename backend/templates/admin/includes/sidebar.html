@@ -1,0 +1,199 @@
+    <div class="sidebar" data-color="purple" data-background-color="black" data-image="/static/assets/img/sidebar-1.jpg">
+      <div class="logo">
+        <a target="_blank" rel="noopener noreferrer"
+           target="_blank" rel="noopener noreferrer"
+           href="/admin/" class="simple-text logo-normal">
+          Soccerstreet Bets
+        </a>
+      </div>
+      {% if user.is_authenticated %}
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item {% if 'index' == segment %} active {% endif %}">
+            <a class="nav-link" href="/admin/">
+              <i class="material-icons">Dashboard</i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+           <li class="nav-item {% if 'index' == segment %} active {% endif %}">
+            <a class="nav-link" href="/admin/db_table/betslip/">
+
+              <i class="material-icons">Betslip</i>
+              <p>Bet Slip</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'index' == segment %} active {% endif %}">
+            <a class="nav-link" href="/admin/db_table/message/">
+
+              <i class="material-icons">Message</i>
+              <p>Message</p>
+            </a>
+          </li>
+           <li class="nav-item {% if 'index' == segment %} active {% endif %}">
+            <a class="nav-link" href="/admin/db_table/users/">
+
+              <i class="material-icons">User</i>
+              <p>User Manager</p>
+            </a>
+          </li>
+          
+          <li class="nav-item {% if 'index' == segment %} active {% endif %}">
+            <a class="nav-link" href="/admin/db_table/affiliateuser/">
+              <i class="material-icons">Affiliateuser</i>
+              <p>Affiliate Manager</p>
+            </a>
+<!--          </li>-->
+<!--          <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">-->
+<!--            <a class="nav-link" href="/admin/db_table/countries/">-->
+<!--              <i class="material-icons">Countries</i>-->
+<!--              <p>Countries</p>-->
+<!--            </a>-->
+<!--          </li>-->
+          <li class="nav-item {% if 'ui-tables' in segment %} active {% endif %}">
+            <a class="nav-link" href="/admin/db_table/leagues/">
+              <i class="material-icons">League</i>
+              <p>League Manager</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'ui-typography' in segment %} active {% endif %}">
+            <a class="nav-link" href="/admin/db_table/teams/">
+              <i class="material-icons">Team</i>
+              <p>Team Manager</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'ui-icons' in segment %} active {% endif %}">
+            <a class="nav-link" href="/admin/db_table/players/">
+              <i class="material-icons">Player</i>
+              <p>Player Manager</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'ui-notifications' in segment %} active {% endif %}">
+            <a class="nav-link" href="/admin/db_table/allseason/">
+              <i class="material-icons">Season</i>
+              <p>Season Manager</p>
+            </a>
+          </li>
+            <li class="nav-item {% if 'ui-notifications' in segment %} active {% endif %}">
+            <a class="nav-link" href="/admin/db_table/matchrankings/">
+              <i class="material-icons">Match</i>
+              <p>Match Ranking</p>
+            </a>
+          </li>
+
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/subscriptions/">
+              <i class="material-icons">Subscription</i>
+              <p>Subscription Manager</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/blogs/">
+              <i class="material-icons">News</i>
+              <p>News</p>
+            </a>
+          </li>
+           <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/cms/">
+              <i class="material-icons">Cms</i>
+              <p>Cms</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/matchfixtureupdate/">
+              <i class="material-icons">Popularmatch</i>
+              <p>Popular Match</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/odds/">
+              <i class="material-icons">Popularodds</i>
+              <p>Popular Odds</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/smp/">
+              <i class="material-icons">Seasonmatchplan</i>
+              <p>Season Match Plan</p>
+            </a>
+          </li>
+           <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/scraplist/">
+              <i class="material-icons">Scraptool</i>
+              <p>Scrap Tool</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/Creamlist/">
+              <i class="material-icons">Cream</i>
+              <p>Cream List</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/ShowPlayerByTeamGraph/">
+              <i class="material-icons">Playergraph</i>
+              <p>Player Graph</p>
+            </a>
+          </li>
+        <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/ShowByTeamGraph/">
+              <i class="material-icons">Teamgraph</i>
+              <p>Team Graph</p>
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/ViewMatchByDate/">
+              <i class="material-icons">Match</i>
+              <p>View Match By Date</p>
+            </a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/fixture/">
+              <i class="material-icons">Live</i>
+              <p>Live match listing</p>
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/OddsProbability/">
+              <i class="material-icons">Odds</i>
+              <p>Odds Probability</p>
+            </a>
+        </li>
+
+
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/betslip/">
+              <i class="material-icons">Bet slip</i>
+              <p>Bet slip</p>
+            </a>
+          </li>
+
+           <li class="nav-item ">
+            <a class="nav-link" href="/admin/db_table/message/">
+              <i class="material-icons">Message</i>
+              <p>Message</p>
+            </a>
+          </li>
+
+
+        </ul>
+
+
+
+
+
+
+
+<!--          <li class="nav-item active-pro ">-->
+<!--            <a target="_blank" rel="noopener noreferrer"-->
+<!--               class="nav-link"-->
+<!--               href="https://www.creative-tim.com/product/material-dashboard-django">-->
+<!--              <i class="material-icons">unarchive</i>-->
+<!--              <p>See product</p>-->
+<!--            </a>-->
+<!--          </li>-->
+
+      </div>
+      {% endif %}
+
+    </div>

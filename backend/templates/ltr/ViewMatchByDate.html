@@ -1,0 +1,164 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Morris Charts css -->
+		<link href="{% static ''%}assets/plugins/morris/morris.css" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+
+		<!--Daterangepicker css-->
+		<link href="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+		{% endblock styles %}
+
+						{% block body %}
+						<!--Page header-->
+						<div class="page-header">
+							<div class="page-leftheader">
+								<h4 class="page-title">Upcoming Matches (7 Days)</h4>
+							</div>
+
+							<div class="page-rightheader ms-auto d-lg-flex d-none">
+								
+							</div>
+						</div>
+						<!--End Page header-->
+
+						<!--Row-->
+						<div class="row">
+							<div class="col-xl-3 col-md-3 col-lg-12 border">
+								<form id="ViewMatchByDate" class="text-center border border-light" method="POST" action="/admin/db_table/ViewMatchByDate/">
+								<div class="card">
+									<div class="card-body">
+										
+										<div class="ms-5 mb-0">
+											{% csrf_token %}
+											<input type="hidden" name="todate" id="todate">
+											<input type="hidden" name="fromdate" id="fromdate">
+											<a class="btn btn-white date-range-btn btn-block" href="javascript:void(0)" id="daterange-btn"><span>Select Date<i class="fa fa-caret-down"></i></span>
+											</a>
+											
+										</div>
+										<br/>
+										<div class="ms-5 mb-0">
+											<input type="hidden" name="today" id="today">
+											<a href="javascript:void(0)" id="todaymatch" class="btn btn-warning btn-block">Today Match</a>
+
+										</div>
+										<br/>
+										<div class="ms-5 mb-0">
+											<select id="League" name="League" class="form-control SlectBox">
+												<!--placeholder-->
+												<option value="">Sort by league</option>
+												<option value="32">European premier league</option>
+												<option value="564">Spanish La Ligaaab</option>
+												<option value="384">Italian series A</option>
+												<option value="82">Bundesliga</option>
+												<option value="304">French le championnat ligue 1</option>
+												<option value="1114"> Copa America</option>
+											</select>
+										</div>
+										
+									</div>
+								</div>
+							</form>
+							</div>
+							<div class="col-xl-9 col-md-12 col-lg-12">
+								<div class="row">
+									{% if final_res %}
+										{% for res in final_res %}
+											
+										<div class="col-xl-4 col-lg-4 col-md-12">
+											<div class="card">
+												<div class="card-body">
+													<div class="row">
+														<div class="col-xl-5 col-lg-5 col-md-12">
+														
+															<img width="50" height="50" src="{{res.teams.home.logo}}">
+															<div class="mb-1 font-weight-bold">{{res.teams.home.name}}</div>
+														
+														</div>
+														<div class="col-xl-2 col-lg-2 col-md-12">
+															<br/>
+															<a href="/admin/db_table/HeadtoHeadView_rapid/{{res.fixture.id}}/{{res.league.id}}/{{res.teams.home.id}}/{{res.teams.away.id}}" >
+															<i class="fa fa-bar-chart-o" data-bs-toggle="tooltip" title="" data-bs-original-title="Statistics" aria-label="fa fa-bar-chart-o"></i>
+														</a>
+															
+														</div>
+														<div class="col-xl-5 col-lg-5 col-md-12">
+														
+															<img  width="50" height="50" src="{{res.teams.away.logo}}">
+															<div class="mb-1 font-weight-bold">{{res.teams.away.name}}</div>
+														
+														</div>
+													</div>
+													
+													<span class="mb-1 text-muted">
+														Venue:- {{res.fixture.venue.name}}
+													</span>
+													<br/>
+													<span class="mb-1 text-muted text-right">
+														Date:- {{res.fixture.date}}
+													</span>
+
+												</div>
+											</div>
+										</div>
+										{% endfor %}
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						
+						<!--End row-->
+
+						
+						{% endblock body %}
+					
+		{% block scripts %}
+		<!--Moment js-->
+		<script src="{% static ''%}assets/plugins/moment/moment.js"></script>
+
+		<!-- Daterangepicker js-->
+		<script src="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<!-- <script src="{% static ''%}assets/js/daterange.js"></script> -->
+
+		<!--Chart js -->
+		<script src="{% static ''%}assets/plugins/chart/chart.min.js"></script>
+		<script src="{% static ''%}assets/plugins/chart/chart.extension.js"></script>
+
+		<!-- ECharts js-->
+		<script src="{% static ''%}assets/plugins/echarts/echarts.js"></script>
+		<script src="{% static ''%}assets/js/index2.js"></script>
+		<script>
+			//Date range as a button
+			$('#daterange-btn').daterangepicker({
+				ranges: {
+					'Today': [moment(), moment()],
+					'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+					'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+					'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+					'This Month': [moment().startOf('month'), moment().endOf('month')],
+					'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+				},
+				startDate: moment().subtract(29, 'days'),
+				endDate: moment()
+			}, function(start, end) {
+				console.log(start.format('YYYY-MM-DD'))
+				console.log(end.format('YYYY-MM-DD'))
+				$('#todate').val(start.format('YYYY-MM-DD'))
+				$('#fromdate').val(end.format('YYYY-MM-DD'))
+				$("#ViewMatchByDate").submit();
+				$('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+			})
+			$("#qbut1").click(function() {
+				$('#today').val('today');
+				$("#ViewMatchByDate").submit();
+			});
+			$("#League").change(function() {
+				
+				$("#ViewMatchByDate").submit();
+			});
+		</script>
+		{% endblock scripts %}

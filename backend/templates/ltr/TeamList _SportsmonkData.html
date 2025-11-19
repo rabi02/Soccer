@@ -1,0 +1,180 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<style type="text/css">
+			#page-loader{
+			display: none;
+			padding-left: 300px;
+		}
+		</style>
+		{% endblock styles %}
+
+						{% block body %}
+
+						<!-- Row -->
+						<div class="row">
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+									<div class="row">
+
+										<input type="hidden" name="season_search" id="season_search" value="{{season_search}}">
+										<input type="hidden" name="league_search" id="league_search" value="{{league_search}}">
+										<input type="hidden" name="start_limit" id="start_limit" value="{{start_limit}}">
+										<input type="hidden" name="end_limit" id="end_limit" value="{{end_limit}}">
+
+										<div class="col-md-5 col-sm-5">
+											<div class="card-header"><h3 class="card-title">Team List</h3></div>
+										</div>
+										<div class="col-md-4 col-sm-4">
+											<select name="league_id" id="league_id" class="form-control" onchange="leaguebyTeam(this)">
+												<option>League</option>
+											{% for lg in league_detail %}
+												<option value="{{lg.league_id}}">{{lg.name}}</option>
+											{% endfor %}
+											</select>
+										</div>
+										
+									</div> 
+									
+									<div class="table-responsive">
+										<table class="table card-table table-vcenter text-nowrap mb-0" id="pageload">
+											<thead  class="bg-primary text-white">
+												<tr >
+													<th class="text-white">ID</th>
+													<th class="text-white"></th>
+													<th class="text-white">Name</th>
+													<th class="text-white">Country</th>
+													<th class="text-white">Season</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for tm in result%}
+												<tr>
+													<th scope="row">{{tm.team_id}}</th>
+													<td><img width="50" height="50" src="{{tm.logo_path}}"></td>
+													<td>{{tm.name}}</td>
+													<td>{{tm.country}}</td>
+													<td>{{tm.season}}</td>
+													<td><a href="/admin/db_table/ViewTeamStatistics/{{tm.team_id}}/{{tm.season_id}}" class="btn btn-cyan">View Statistics</a></td>
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+									<div id="page-loader">
+										<img height="80px" width="80px" src="/static/assets/images/svgs/loader.svg" alt="loader">
+									</div>
+									<!-- table-responsive -->
+								</div>
+							</div>
+						</div>
+						<!-- End Row -->
+
+						
+						{% endblock body %}
+						
+					
+		{% block scripts %}
+			<script>
+				function leaguebyTeam(selval){
+					var value = selval.options[selval.selectedIndex].value;
+					// alert(value)
+					var league = '?league='+value;
+					window.location.href=league;
+				}			
+				$(document).ready(function() {
+					// $("#league_id").on('change', function() {
+					// 	var league_id = $("#league_id").val();
+					// 	// alert(league_id)
+					// 	var serieliser = {
+					// 		'league_id':league_id,
+					// 	};
+					// 	console.log(serieliser)
+					// 	$.ajax({
+					// 	type: 'POST',
+					// 	url: "/api/ajax/getSeasonByLeague",
+					// 	data: JSON.stringify(serieliser),
+					// 	contentType: "application/json; charset=utf-8",
+					// 	success: function (response) {
+					// 	console.log(response)
+					// 	$("#season_id").html(response.html);	
+
+					// 	},
+					// 	error: function (response) {
+					// 	// alert the error if any error occured
+					// 	console.log(response);
+					// 	}
+					// 	})
+					// })
+
+					// $('#pageload').bind('mousewheel', function(e){
+					// 	if(e.originalEvent.wheelDelta /120 > 0) {
+					// 		console.log('scrolling up !');
+					// 	}
+					// 	else{
+					// 		if($('#page-loader').css('display') == 'none'){
+					// 			$('#page-loader').show();
+					// 			console.log('scrolling down !');
+					// 			var end_limit = $("#end_limit").val();
+					// 			var start_limit = $("#start_limit").val();
+					// 			var League = $("#league_search").val();
+					// 			var season_search = $("#season_search").val();
+					// 			var serializedData = {
+					// 				'end_limit':end_limit,
+					// 				'start_limit':start_limit,
+					// 				'league_search':League,
+					// 				'season_search':season_search
+					// 				};
+					// 			console.log(serializedData)
+					// 			$.ajax({
+					// 				type: 'POST',
+					// 				url: "/api/ajax/GetAjaxTeamList",
+					// 				data: JSON.stringify(serializedData),
+					// 				success: function (response) {
+					// 					$('#page-loader').hide();
+					// 					var htmldata = response.htmldata
+					// 					$("#end_limit").val(response.end_limit);
+					// 					$("#start_limit").val(response.start_limit);
+					// 					for (let i = 0; i < htmldata.length; i++) {
+					// 						$("#pageload tbody").prepend(
+					// 						'<tr><th scope="row">'+htmldata[i]["team_id"]+'</th><td><img width="50" height="50" src="'+htmldata[i]["logo_path"]+'"></td><td>'+htmldata[i]["name"]+'</td><td>'+htmldata[i]["country"]+'</td><td>'+htmldata[i]["season"]+'</td><td><a href="/admin/db_table/ViewTeamStatistics/'+htmldata[i]["team_id"]+'/'+htmldata[i]["season_id"]+'" class="btn btn-cyan">View Statistics</a></td></tr>'
+					// 						)
+					// 					}
+					// 				},
+					// 				error: function (response) {
+					// 				// alert the error if any error occured
+					// 				alert(response["responseJSON"]["error"]);
+					// 				}
+					// 			})
+					// 		}
+					// 	}
+					// });
+				})
+				// $(document).ready(function() {
+				// 	var season_id = $("#season_search").val()
+				// 	var serieliser = {
+				// 			'season_id':season_id,
+				// 		};
+				// 	if (season_id!=''){
+				// 		$.ajax({
+				// 			type: 'POST',
+				// 			url: "/api/ajax/saveTeamByseasonSportsmonk",
+				// 			data: JSON.stringify(serieliser),
+				// 			contentType: "application/json; charset=utf-8",
+				// 			success: function (response) {
+				// 				console.log(response)
+				// 			},
+				// 			error: function (response) {
+				// 				// alert the error if any error occured
+				// 				console.log(response);
+				// 			}
+				// 		})
+
+				// 	}
+					
+					
+				// })
+			</script>
+		{% endblock scripts %}

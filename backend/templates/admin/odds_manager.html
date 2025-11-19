@@ -1,0 +1,42 @@
+{% extends "admin/layouts/base.html" %}
+
+
+{% block content %}
+<div class="row">
+	<div class="col-md-6 col-sm-6"><h1 id="titleclass">Odds Manager </h1></div>
+	<div class="col-md-6 col-sm-6 text-right"><input class="btn btn-success" type=button value="Back" onClick="javascript:history.go(-1);"></div>
+	
+	<div class="col-md-12 col-sm-12">
+		<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      <th>Home Team</th>
+		      <th>Away Team</th>
+		      <th>Home Odds</th>
+		      <th>Draw Odds</th>
+		      <th>Away Ods</th>
+		      <th>Home Probability</th>
+		      <th>Draw Probability</th>
+		      <th>Away Probability</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	<tr>
+		  		<td>{{res.home_team_name}}</td>
+		  		<td>{{res.away_team_name}}</td>
+		  		<td>{{res.home}}</td>
+		  		<td>{{res.draw}}</td>
+		  		<td>{{res.away}}</td>
+		  		<td>{{res.home_odd_prb}}%</td>
+		  		<td>{{res.draw_odd_prb}}%</td>
+		  		<td>{{res.away_odd_prb}}%</td>
+		  		
+		  	</tr> 
+		  </tbody>
+		</table>
+	</div>
+</div>
+
+{% endblock %}
+
+

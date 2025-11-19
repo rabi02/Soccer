@@ -1,0 +1,100 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<style type="text/css">
+			#page-loader{
+			display: none;
+			padding-left: 300px;
+		}
+		</style>
+		{% endblock styles %}
+
+		{% block body %}
+<div class="row">
+	<div class="col-md-6 col-sm-6">
+		<h1 id="titleclass">Scrap List</h1>
+	</div>
+	<div class="col-md-6 col-sm-6 text-right">
+		<a class="btn btn-success" href="/admin/db_table/GetScrapingData">Add</a>
+	</div>
+</div>
+<div class="row">
+
+	<div class="col-md-12 col-sm-12">
+		<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      
+		      <th>Scrap Name</th>
+		      <th>Scrap URL</th>
+		      <th>Inspect Class</th>
+		      <th>Inspect Type</th>
+		      <th>Exempted Col No</th>
+		      <th>Scrap Type</th>
+		      <th>result</th>
+		      <th>Action</th>
+		     <!--  <th>Edit</th>
+		      <th>Delete</th> -->
+		      
+		    </tr>
+		  </thead>
+		  <tbody>
+		    {% for smp in scrap_list %}
+		      <tr>
+		        <td>{{smp.scrapname}}</td>
+		        <td width="20%">{{smp.scrap_url}}</td>
+		        <td>{{smp.scrap_element_class}}</td>
+		        <td>{{smp.scrap_element_type}}</td>
+		        <td>{{smp.exemptColumn}}</td>
+		        <td>{{smp.scrap_type}}</td>
+		        <td>
+		        	{% if smp.scrap_return_reult %}
+		        		{% if smp.scrap_return_reult == 'None' %}
+		        			<span>No Data Found</span>
+		        		{% else %}
+		        		<a class="link" href="#" data-toggle="modal" data-target="#{{smp.slug}}">View Data</a>
+		        			
+		        		{% endif %}
+		        	{% else %}
+		        		scraping tool is not use
+		        	{% endif %}
+					<div class="modal fade" id="{{smp.slug}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;" > 
+					<div class="modal-content">
+					<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">{{smp.scrapname}}</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+					</div>
+					<div class="modal-body">
+					{{smp.scrap_return_reult}}
+					</div>
+					<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+					</div>
+					</div>
+					</div>
+		    	</td>
+		        <td>
+		        	<a class="btn btn-success" href="/admin/db_table/RunScrapingTool/{{smp.slug}}">Scrap</a>
+		        </td>
+		        <!-- <td> </td> -->
+		      </tr>
+		    {% endfor %}
+		  </tbody>
+		</table>
+
+		
+	</div>
+</div>
+{% endblock body %}
+						
+					
+		{% block scripts %}
+
+{% endblock %}
+
+

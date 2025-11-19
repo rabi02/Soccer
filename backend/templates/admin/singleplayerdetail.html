@@ -1,0 +1,123 @@
+{% extends "admin/layouts/base.html" %}
+
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-6 col-sm-6"><h1 id="titleclass">Player Info</h1></div>
+	<div class="col-md-6 col-sm-6 text-right"><input class="btn btn-success" type=button value="Back" onClick="javascript:history.go(-1);"></div>
+</div>
+<div class="row">
+	
+	<div class="col-md-8 col-sm-8">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+
+					<th colspan="2" align="center">league</th>
+					<th align="center">Season</th>
+					<th>Team</th>
+					<th align="center" width="5%"><img src="https://s.hs-data.com/bilder/shared/spieleinsatz.gif" alt="Matches" title="Matches"></th>
+					<th align="center" width="5%"><img src="https://s.hs-data.com/bilder/shared/tor.gif" alt="goals" title="goals"></th>
+					<th align="center" width="5%"><img src="https://s.hs-data.com/bilder/shared/startelf.gif" alt="Starting line-up" title="Starting line-up"></th>
+					<th align="center" width="5%"><img src="https://s.hs-data.com/bilder/shared/einwechslung.gif" alt="Substitue in" title="Substitue in"></th>
+					<th align="center" width="5%"><img src="https://s.hs-data.com/bilder/shared/auswechslung.gif" alt="Substitue out" title="Substitue out"></th>
+					<th align="center" width="5%"><img src="https://s.hs-data.com/bilder/shared/karten/1.gif" alt="yellow cards" title="yellow cards"></th>
+					<th align="center" width="5%"><img src="https://s.hs-data.com/bilder/shared/karten/2.gif" alt="second yellow cards" title="second yellow cards"></th>
+					<th align="center" width="5%"><img src="https://s.hs-data.com/bilder/shared/karten/3.gif" alt="red cards" title="red cards"></th>
+							
+				</tr>
+			</thead>
+			{% for pc in Playercareer %}
+				<tr>
+					<td><img src="{{pc.flag}}"></td>
+					<td>{{pc.league_name}}</td>
+					<td>{{pc.season_name}}</td>
+					<td>{{pc.team_name}}</td>
+					<td>{{pc.matches}}</td>
+					<td>{{pc.goals}}</td>
+					<td>{{pc.started}}</td>
+					<td>{{pc.s_in}}</td>
+					<td>{{pc.s_out}}</td>
+					<td>{{pc.yellow}}</td>
+					<td>{{pc.s_yellow}}</td>
+					<td>{{pc.red}}</td>
+				</tr>
+			{% endfor %}
+				<tr>
+					<td colspan="4" class="text-right" style="font-weight: bold;">Total Records</td>
+					<td>{{avg_psg.total_match}}</td>
+					<td>{{avg_psg.total_goal}}</td>
+					<td>{{avg_psg.total_start}}</td>
+					<td>{{avg_psg.total_s_in}}</td>
+					<td>{{avg_psg.total_s_out}}</td>
+					<td>{{avg_psg.total_yellow}}</td>
+					<td>{{avg_psg.total_s_yellow}}</td>
+					<td>{{avg_psg.total_red}}</td>
+				</tr>
+		</table>
+
+	</div>
+	<div class="col-md-4 col-sm-4">
+
+		<table class="table table-bordered">
+			<thead>
+				{% for plr in player %}
+				<tr>
+					<th style="width: 100px;"><img class="img-responsive" src="{{plr.img_src}}"></th>
+				</tr>
+				<tr>
+					<td>ID:- {{plr.player_id}}</td>
+				</tr>
+				<tr>
+					<td>Born:- {{plr.birthday}}</td>
+				</tr>
+				
+				<tr>
+					<td>Name:- {{plr.player_name}}</td>
+				</tr>
+				<tr>
+					<td>Nationality:-{{plr.nationality}}</td>
+				</tr>
+				<tr>
+					<td>Position:- {{plr.nationality}}</td>
+				</tr>
+				{% endfor %}
+			</thead>	
+		</table>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td colspan="2"><b>Average</b></td>
+				</tr>
+				<tr>
+					<td><img src="https://s.hs-data.com/bilder/shared/spieleinsatz.gif" alt="Matches" title="Matches"> Match:- {{avg_psg.avg_match}}</td>
+				</tr>
+				<tr>
+					<td><img src="https://s.hs-data.com/bilder/shared/tor.gif" alt="goals" title="goals"> Goal:- {{avg_psg.avg_goal}}</td>
+				</tr>
+				<tr>
+					<td><img src="https://s.hs-data.com/bilder/shared/einwechslung.gif" alt="Substitue in" title="Substitue in"> S In:- {{avg_psg.avg_s_in}}</td>
+				</tr>
+				<tr>
+					<td><img src="https://s.hs-data.com/bilder/shared/auswechslung.gif" alt="Substitue out" title="Substitue out"> S Out:-{{avg_psg.avg_s_out}}</td>
+				</tr>
+				<tr>
+					<td><img src="https://s.hs-data.com/bilder/shared/karten/1.gif" alt="yellow cards" title="yellow cards"> Yellow:- {{avg_psg.avg_yellow}}</td>
+				</tr>
+				<tr>
+					<td><img src="https://s.hs-data.com/bilder/shared/karten/2.gif" alt="second yellow cards" title="second yellow cards"> S Yellow:- {{avg_psg.avg_s_yellow}}</td>
+				</tr>
+				<tr>
+					<td><img src="https://s.hs-data.com/bilder/shared/karten/3.gif" alt="red cards" title="red cards"> Red:- {{avg_psg.avg_red}}</td>
+				</tr>
+			</thead>
+		</table>
+		
+
+	</div>
+</div>
+
+{% endblock %}
+
+

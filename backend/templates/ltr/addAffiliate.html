@@ -1,0 +1,109 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Forn-wizard css-->
+		<link href="{% static ''%}assets/plugins/quill/quill.snow.css" rel="stylesheet">
+		<link href="{% static ''%}assets/plugins/quill/quill.bubble.css" rel="stylesheet">
+
+		<!-- WYSIWYG Editor css -->
+		<link href="{% static ''%}assets/plugins/wysiwyag/richtext.css" rel="stylesheet" />
+		{% endblock styles %}
+
+			{% block body %}
+			
+
+			<!-- Row -->
+			<div class="row ">
+				<div class="col-md-12">
+					<div class="card">
+						{% if success_message != '' %}
+							<div class="alert alert-success">
+								<strong>Success!</strong> {{success_message}}
+							</div>
+						{% endif %}
+
+						{% if error_message != '' %}
+							<div class="alert alert-danger">
+								<strong>Error!</strong> {{error_message}}
+							</div>
+						{% endif %}
+
+						<div class="card-header">
+							<div class="card-title">
+								Affiliate Manager
+							</div>
+						</div>
+						<div class="card-body pb-2">
+							<form action="/admin/db_table/addAffiliate" class="needs-validation" method="post" novalidate>
+								<div class="row">
+									<div class="col-lg-6">
+										<input type="hidden" value="{{affiliate.id}}" name="id" id="id">
+										<div class="mb-3">
+											<label class="form-label">Name</label>
+											<input type="text" class="form-control required" placeholder="Name" value="{{affiliate.name}}" name="name" id="affiliate_name" aria-describedby="inputGroupPrepend2" required>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Email</label>
+											<input type="email" class="form-control required" placeholder="Email" name="email" id="email" value="{{affiliate.email}}" required>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Phone</label>
+											<input type="phone" class="form-control required" placeholder="Phone" name="phone" id="phone" value="{{affiliate.phone}}" required>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="mb-3">
+											<label class="form-label">Country</label>
+											<input type="text" class="form-control required" placeholder="Country" name="country" id="country" value="{{affiliate.country}}" required>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Password</label>
+											<input type="password" class="form-control required" placeholder="Password" name="password" value="" id="password" required>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Confirm Password</label>
+											<input type="password" class="form-control required" placeholder="Confirm Password" name="confirm_password" value="" id="confirm_password" required>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12 text-center">
+									<button class="btn btn-success mt-3" type="submit">Submit</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/Row -->
+			
+			{% endblock body %}
+					
+		{% block scripts %}
+		<!-- Jquery.steps js -->
+		<script src="{% static ''%}assets/plugins/wysiwyag/jquery.richtext.js"></script>
+		<script src="{% static ''%}assets/js/form-editor.js"></script>
+		<script src="{% static ''%}assets/plugins/quill/quill.min.js"></script>
+		<script src="{% static ''%}assets/js/form-editor2.js"></script>
+		<script>
+	        // Self-executing function
+	        (function() {
+	            'use strict';
+	            window.addEventListener('load', function() {
+	                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+	                var forms = document.getElementsByClassName('needs-validation');
+	                
+	                // Loop over them and prevent submission
+	                var validation = Array.prototype.filter.call(forms, function(form) {
+	                    form.addEventListener('submit', function(event) {
+	                        if (form.checkValidity() === false) {
+	                            event.preventDefault();
+	                            event.stopPropagation();
+	                        }
+	                        form.classList.add('was-validated');
+	                    }, false);
+	                });
+	            }, false);
+	        })();
+    	</script>
+		{% endblock scripts %}

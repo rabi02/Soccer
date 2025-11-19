@@ -1,0 +1,192 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Data table css -->
+		<link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.css" rel="stylesheet" />
+		<link href="{% static ''%}assets/plugins/datatable/css/buttons.bootstrap5.min.css"  rel="stylesheet">
+		<link href="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.css" rel="stylesheet" />
+
+		<!-- Slect2 css -->
+		<link href="{% static ''%}assets/plugins/select2/select2.min.css" rel="stylesheet" />
+		{% endblock styles %}
+
+						{% block body %}
+						
+						<!-- Row -->
+						<div class="row">
+							<div class="col-12">
+								
+
+								<!--div-->
+								<div class="card">
+									<div class="card-header">
+										<input type="hidden" name="league_search" id="league_search" value="{{league_search}}">
+										<div class="col-md-4 ps-0">
+											<h3 class="card-title">Squad</h3>
+										</div>
+										<div class="col-md-4">
+											<select name="league_id" id="league_id" class="form-control">
+												<option>League</option>
+											{% for lg in league_detail %}
+												<option value="{{lg.league_id}}">{{lg.name}}</option>
+											{% endfor %}
+											</select>
+										</div>
+										<div class="col-md-4 pe-0">
+											<select name="team_id" id="team_id" class="form-control" onchange="teambyplayer(this)">
+												<option>Team</option>
+											{% for tm in team_detail %}
+												<option value="{{tm.team_id}}">{{tm.name}}</option>
+											{% endfor %}
+											</select>
+										</div>	
+									</div> 
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="table transaction-table table-striped" id="example2">
+												<thead class="thead-light">
+													<tr>
+														<th>Id</th>
+														<th>Name</th>
+														<th>age</th>
+														<th>Team</th>
+														<th>League</th>
+														<th>Country</th>
+														<th>Rating</th>
+														<th><img src="/static/icon/goal.png"></th>
+														<th><img src="/static/icon/red.png"></th>
+														<th><img src="/static/icon/yellowred.png"></th>
+														<th><img src="/static/icon/yellow.png"></th>
+														<th>More Info</th>
+													</tr>
+												</thead>
+												<tbody>
+													{% for player in player_detail%}
+														<tr>
+															<td>{{player.player_id}}</td>
+															<td>{{player.name}}</td>
+															<td>{{player.age}}</td>
+															<td>{{player.team_name}}</td>
+															<td>{{player.league_name}}</td>
+															<td>{{player.country}}</td>
+															<td>{{player.rating}}</td>
+															<td>{{player.goals}}</td>
+															<td>{{player.redcards}}</td>
+															<td>{{player.yellowred}}</td>
+															<td>{{player.yellowcards}}</td>
+															
+															<td class="text-center">
+																<a href="/admin/db_table/ViewSquardStatistics/{{player.player_id}}"><i class="ion-navicon-round"  aria-label="Infon-navicon-round"></i></a>
+															</td>
+														</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<!--/div-->
+								
+							</div>
+						</div>
+						<!-- /Row -->
+						{% endblock body %}
+					
+		{% block scripts %}
+		<!-- Data tables -->
+		<script src="{% static ''%}assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/jszip.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.html5.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.print.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/dataTables.responsive.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+		<script src="{% static ''%}assets/js/datatables.js"></script>
+
+		<!-- Select2 js -->
+		<script src="{% static ''%}assets/plugins/select2/select2.full.min.js"></script>
+		<script>
+			
+				function teambyplayer(selval){
+					var value = selval.options[selval.selectedIndex].value;
+					// alert(value)
+					var season = '?team='+value;
+					window.location.href=season;
+				}			
+				$(document).ready(function() {
+					$("#league_id").on('change', function() {
+						var league_id = $("#league_id").val();
+						// alert(league_id)
+						var serieliser = {
+							'league_id':league_id,
+						};
+						console.log(serieliser)
+						$.ajax({
+						type: 'POST',
+						url: "/api/ajax/getAjaxTeamByLeague",
+						data: JSON.stringify(serieliser),
+						contentType: "application/json; charset=utf-8",
+						success: function (response) {
+						console.log(response)
+						$("#team_id").html(response.html);	
+
+						},
+						error: function (response) {
+						// alert the error if any error occured
+						console.log(response);
+						}
+						})
+					})
+				})
+				$(document).ready(function(){
+				
+				$('#pageload').bind('mousewheel', function(e){
+					if(e.originalEvent.wheelDelta /120 > 0) {
+						console.log('scrolling up !');
+					}
+					else{
+						if($('#page-loader').css('display') == 'none'){
+							$('#page-loader').show();
+							console.log('scrolling down !');
+							var end_limit = $("#end_limit").val();
+							var start_limit = $("#start_limit").val();
+							var League = $("#league_search").val();
+							var serializedData = {
+								'end_limit':end_limit,
+								'start_limit':start_limit,
+								'league_search':League,
+								};
+							console.log(serializedData)
+							$.ajax({
+								type: 'POST',
+								url: "/api/ajax/GetAjaxLeagueList",
+								data: JSON.stringify(serializedData),
+								success: function (response) {
+									$('#page-loader').hide();
+									var htmldata = response.htmldata
+									$("#end_limit").val(response.end_limit);
+									$("#start_limit").val(response.start_limit);
+									for (let i = 0; i < htmldata.length; i++) {
+										$("#pageload tbody").prepend(
+										'<tr><th scope="row">'+htmldata[i]["league_id"]+'</th><td><img width="50" height="50" src="'+htmldata[i]["logo_path"]+'"></td><td>'+htmldata[i]["name"]+'</td><td>'+htmldata[i]["type"]+'</td><td>'+htmldata[i]["country_name"]+'</td></tr>'
+										)
+									}
+								},
+								error: function (response) {
+								// alert the error if any error occured
+								alert(response["responseJSON"]["error"]);
+								}
+							})
+						}
+					}
+				});
+			});
+			</script>
+		</script>
+		{% endblock scripts %}

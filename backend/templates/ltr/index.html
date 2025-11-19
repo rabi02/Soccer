@@ -1,0 +1,288 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		 <style>
+            .card-title1 {
+            width: 172px;
+            line-height: 1.2;
+            text-transform: capitalize;
+            font-weight: 600;
+            letter-spacing: .05rem;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        </style>
+        <!---jvectormap css-->
+        <link href="{% static ''%}assets/plugins/jvectormap/jqvmap.css" rel="stylesheet" />
+
+        <!-- Data table css -->
+        <link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+        <!--Daterangepicker css-->
+        <link href="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+		{% endblock styles %}
+
+					{% block body %}
+                    <!--Row-->
+                    <div class="row row-deck">
+                        
+                        <div class="col-xl-8 col-lg-8 col-md-12">
+                            <div class="card overflow-hidden">
+                                <div class="card-header">
+                                    <h3 class="card-title">Last Login</h3>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <div class="h-400 scrollbar2" id="scrollbar2">
+                                        <div class="table-responsive">
+                                            <table class="table transaction-table table-striped">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>User Name</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Login Time</th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if user_res %}
+                                                    {% for res in user_res %}
+                                                    <tr>
+                                                        <td>
+                                                            {% if res.photo %}
+                                                                <img class="w-5 h-5 rounded shadow" src="{{BASEURL}}{{res.photo}}">
+                                                            {% endif %}
+
+                                                        </td>
+                                                        <td>{{res.username}}</td>
+                                                        <td>{{res.first_name}} {{res.last_name}}</td>
+                                                        <td>{{res.email}}</td>
+                                                        <td>{{res.last_login}}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                    
+
+
+                                                   
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title1">Today`s Match</h3>
+                                    <div class="d-flex ms-auto">
+                                        <div class="btn-group mb-0">
+                                            <select id="League" name="League" class="form-control SlectBox" onchange="leaguebymatch(this)">
+                                                <!--placeholder-->
+                                                <option value="">Sort by league</option>
+                                                <option {% if league_search == 1204 %} selected ="selected" {% endif %} value="1204"> Premier league</option>
+                                                <option {% if league_search == 1399 %} selected ="selected" {% endif %} value="1399">Spanish La Ligaa</option>
+                                                <option {% if league_search == 1269 %} selected ="selected" {% endif %}  value="1269">Italian series A</option>
+                                                <option {% if league_search == 1229 %} selected ="selected" {% endif %} value="1229">Bundesliga</option>
+                                                <option {% if league_search == 1221 %} selected ="selected" {% endif %} value="1221">French le championnat ligue 1</option>
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="latest-timeline latest-timeline1">
+                                        {% if result %}
+                                        <ul class="timeline mb-0">
+                                            {% for upmtch in result %}
+                                            <li class="mt-0 media media-lg">
+                                                <span class="latest-timeline1-icon bg-secondary shadow3">{{upmtch.id}}</span>
+                                                <div class="media mt-0">
+                                                    <div class="media-body">
+                                                        <h6 class="mb-1">
+                                                            <a href="/admin/db_table/HeadtoHeadView/{{upmtch.match_id}}" class="font-weight-semibold fs-17">{{upmtch.match_name}} </a>
+                                                        </h6>
+
+                                                        <p class="mt-1 fs-13 mb-1">
+                                                            {% for rec in upmtch.localteam %}
+                                                                {{rec.name}}
+                                                            {% endfor %}
+                                                            <b>VS</b>
+                                                            {% for vrec in upmtch.visitorteam %}
+                                                                {{vrec.name}}
+                                                            {% endfor %}
+                                                        </p>
+                                                        <span class="text-muted fs-12 d-block">
+                                                            {{upmtch.string_date}}:{{upmtch.formated_time}}
+                                                        </span>
+                                                        <a class="text-primary fs-12 font-weight-bold" href="/admin/db_table/HeadtoHeadView/{{upmtch.match_id}}">View Statistics</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                         <a href="/admin/db_table/ViewMatchByDate/" class="text-center btn btn-info mb-1 "> More</a>
+                                        {% else %}
+                                            
+                                            <div class="text-danger text-center font-weight-bold" >No match on today</div>
+                                            
+                                        {% endif %}
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-8 col-lg-8 col-md-12">
+                            <div class="card overflow-hidden">
+                                <div class="card-header">
+                                    <h3 class="card-title">Payment Transactions</h3>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <div class="h-400 scrollbar2" id="scrollbar2">
+                                        <div class="table-responsive">
+                                            <table class="table transaction-table table-striped">
+                                                <thead class="thead-light">
+                                                    <tr class="bold">
+                                                        <th class="border-bottom-0">User Name</th>
+                                                        <th class="border-bottom-0">Shipping Name</th>
+                                                        <th class="border-bottom-0">Currency</th>
+                                                        <th class="border-bottom-0">Amount</th>
+                                                        <th class="border-bottom-0">Status</th>
+                                                        <th class="border-bottom-0">Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if payment %}
+                                                    {% for pmt in payment %}
+                                                    <tr>
+                                                        <td>{{pmt.username}}</td>
+                                                        <td>{{pmt.shipping_name}} </td>
+                                                        <td>{{pmt.currency_code}}</td>
+                                                        <td>{{pmt.amount}}</td>
+                                                        <td>
+                                                            <span class="badge bg-primary rounded-pill">{{pmt.payment_status}}</span>
+                                                        </td>
+                                                        <td>{{pmt.date_of_payment}}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                    
+
+
+                                                   
+                                                </tbody>
+                                            </table>
+                                            <div class="text-center mt-3">
+                                                <a href="/admin/db_table/PaymentList" class="text-center btn btn-info mb-1 "> More Info</a> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Match Prediction</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        {% if prediction %}
+                                            {% for pred in prediction %}
+                                        <div class="col-xl-12 col-lg-12 col-md-12"> 
+                                           <div class="match-pre-box">
+                                                    <p class="mb-1">{{pred.Home}} <span class="vs">VS</span> {{pred.Away}} </p>
+                                                    <h2 class="my-1 mt-3 font-weight-bold">{{pred.prediction}}
+                                                    </h2>
+                                                    <span class="mb-1 text-muted">
+                                                        <p> Decimal Odds</p>
+                                                    <span class="text-danger">
+                                                        {{pred.predicted_decimal_odds_away_odds}} | {{pred.predicted_decimal_odds_draw_odds}} | {{pred.predicted_decimal_odds_home_odds}}
+                                                    </span> 
+                                                </span> 
+                                          </div>
+                                        </div>
+                                         {% endfor %}
+                                        {% endif %}
+                                        <a href="/admin/db_table/ViewMatchByDate/" class="text-center btn btn-info mb-1 "> More</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                      
+
+                    </div>
+                    <!--End row-->
+                    {% endblock body %}
+					
+		{% block scripts %}
+        <!-- ECharts js -->
+        <script src="{% static ''%}assets/plugins/echarts/echarts.js"></script>
+
+        <!-- Peitychart js-->
+        <script src="{% static ''%}assets/plugins/peitychart/jquery.peity.min.js"></script>
+        <script src="{% static ''%}assets/plugins/peitychart/peitychart.init.js"></script>
+
+        <!-- Apexchart js-->
+        <script src="{% static ''%}assets/js/apexcharts.js"></script>
+
+        <!--Moment js-->
+        <script src="{% static ''%}assets/plugins/moment/moment.js"></script>
+
+        <!-- Daterangepicker js-->
+        <script src="{% static ''%}assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+        <script src="{% static ''%}assets/js/daterange.js"></script>
+
+        <!---jvectormap js-->
+        <script src="{% static ''%}assets/plugins/jvectormap/jquery.vmap.js"></script>
+        <script src="{% static ''%}assets/plugins/jvectormap/jquery.vmap.world.js"></script>
+        <script src="{% static ''%}assets/plugins/jvectormap/jquery.vmap.sampledata.js"></script>
+
+        <!-- Index js-->
+        <script src="{% static ''%}assets/js/index1.js"></script>
+
+        <!-- Data tables js-->
+        <script src="{% static ''%}assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/jszip.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/buttons.html5.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/buttons.print.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/dataTables.responsive.min.js"></script>
+        <script src="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+        <script src="{% static ''%}assets/js/datatables.js"></script>
+
+        <!--Counters -->
+        <script src="{% static ''%}assets/plugins/counters/counterup.min.js"></script>
+        <script src="{% static ''%}assets/plugins/counters/waypoints.min.js"></script>
+
+        <!--Chart js -->
+        <script src="{% static ''%}assets/plugins/chart/chart.bundle.js"></script>
+        <script src="{% static ''%}assets/plugins/chart/utils.js"></script>
+        <script>
+            function leaguebymatch(selval){
+                var value = selval.options[selval.selectedIndex].value;
+                // alert(value)
+                if (value){
+                    var league = '?league='+value;
+                    window.location.href=league;
+                }
+                else{
+                    return(0);
+                }
+                
+            }
+        </script>
+		{% endblock scripts %}

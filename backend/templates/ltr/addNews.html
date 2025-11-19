@@ -1,0 +1,97 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Forn-wizard css-->
+		<link href="{% static ''%}assets/plugins/quill/quill.snow.css" rel="stylesheet">
+		<link href="{% static ''%}assets/plugins/quill/quill.bubble.css" rel="stylesheet">
+
+		<!-- WYSIWYG Editor css -->
+		<link href="{% static ''%}assets/plugins/wysiwyag/richtext.css" rel="stylesheet" />
+		{% endblock styles %}
+
+			{% block body %}
+			
+
+			<!-- Row -->
+			<div class="row ">
+				<div class="col-md-12">
+					{% if message != '' %}
+					<div class="alert alert-success mb-3">
+						<strong>Success!</strong> {{message}}
+					</div>
+					{% endif %}
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">
+								News
+							</div>	
+						</div>
+						<div class="card-body pb-2">
+							<form action="/admin/db_table/addNews" class="needs-validation" method="post" novalidate>
+								<div class="row">
+									<div class="col-lg-6">
+										<input type="hidden" value="{{news.id}}" name="id" id="id">
+										<div class="mb-3">
+											<label class="form-label">News Title</label>
+											<input type="text" class="form-control required" placeholder="Title" value="{{news.title}}" name="title" id="news_title" aria-describedby="inputGroupPrepend2" required>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Meta Title</label>
+											<input type="text" class="form-control required" placeholder="Meta Title" name="meta_title" id="meta_title" value="{{news.meta_title}}" required>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="mb-3">
+											<label class="form-label">Meta Key</label>
+											<input type="text" class="form-control required" placeholder="Meta Key" name="meta_key" id="meta_key" value="{{news.meta_key}}" required>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Meta Description</label>
+											<input type="text" class="form-control required" placeholder="Meta Description" name="meta_description" value="{{news.meta_description}}" id="meta_description" required>
+										</div>
+									</div>
+									<div class="control-group mb-3">
+										<textarea class="content" name="description" id="description">{{news.description}}</textarea>
+									</div>
+								</div>
+								<div class="col-md-12 text-center">
+									<button class="btn btn-success mt-3" type="submit">Submit</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/Row -->
+			
+			{% endblock body %}
+					
+		{% block scripts %}
+		<!-- Jquery.steps js -->
+		<script src="{% static ''%}assets/plugins/wysiwyag/jquery.richtext.js"></script>
+		<script src="{% static ''%}assets/js/form-editor.js"></script>
+		<script src="{% static ''%}assets/plugins/quill/quill.min.js"></script>
+		<script src="{% static ''%}assets/js/form-editor2.js"></script>
+		<script>
+	        // Self-executing function
+	        (function() {
+	            'use strict';
+	            window.addEventListener('load', function() {
+	                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+	                var forms = document.getElementsByClassName('needs-validation');
+	                
+	                // Loop over them and prevent submission
+	                var validation = Array.prototype.filter.call(forms, function(form) {
+	                    form.addEventListener('submit', function(event) {
+	                        if (form.checkValidity() === false) {
+	                            event.preventDefault();
+	                            event.stopPropagation();
+	                        }
+	                        form.classList.add('was-validated');
+	                    }, false);
+	                });
+	            }, false);
+	        })();
+    	</script>
+		{% endblock scripts %}

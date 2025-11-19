@@ -1,0 +1,91 @@
+{% extends 'components/base.html' %}
+{% load static%}
+
+		{% block styles %}
+		<!-- Data table css -->
+		<link href="{% static ''%}assets/plugins/datatable/css/dataTables.bootstrap5.css" rel="stylesheet" />
+		<link href="{% static ''%}assets/plugins/datatable/css/buttons.bootstrap5.min.css"  rel="stylesheet">
+		<link href="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.css" rel="stylesheet" />
+
+		<!-- Slect2 css -->
+		<link href="{% static ''%}assets/plugins/select2/select2.min.css" rel="stylesheet" />
+		{% endblock styles %}
+
+						{% block body %}
+						
+						<!-- Row -->
+						<div class="row">
+							<div class="col-12">
+								
+
+								<!--div-->
+								<div class="card">
+									<div class="card-header">
+										<div class="card-title">User List</div>
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="table table-bordered text-nowrap" id="example2">
+												<thead class="thead-light">
+													<tr>
+														<th>User Name</th>
+														<th>First name</th>
+														<th>Last name</th>
+														<th>Email</th>
+														<th>Date Joined</th>
+														<th>Last Login</th>
+														<th>Active</th>
+														<th>More Info</th>
+													</tr>
+												</thead>
+												<tbody>
+													{% for usr in user_detail%}
+														<tr>
+															<td>{{usr.username}}</td>
+															<td>{{usr.first_name}}</td>
+															<td>{{usr.last_name}}</td>
+															<td>{{usr.email}}</td>
+															<td>{{usr.date_joined}}</td>
+															<td>{{usr.last_login}}</td>
+															<td class="text-center">
+																{% if usr.is_active %}
+																	<img width="20" src="/static/admin/img/icon-yes.svg">
+																{% else %}
+																	<img width="20" src="/static/admin/img/icon-no.svg">
+																{% endif %}
+
+															</td>
+															<td class="text-center"><a href="/admin/db_table/UserDetail/{{usr.id}}"><i class="ion-navicon-round"  aria-label="Infon-navicon-round"></i></td>
+														</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<!--/div-->
+								
+							</div>
+						</div>
+						<!-- /Row -->
+						{% endblock body %}
+					
+		{% block scripts %}
+		<!-- Data tables -->
+		<script src="{% static ''%}assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/jszip.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.html5.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.print.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/dataTables.responsive.min.js"></script>
+		<script src="{% static ''%}assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+		<script src="{% static ''%}assets/js/datatables.js"></script>
+
+		<!-- Select2 js -->
+		<script src="{% static ''%}assets/plugins/select2/select2.full.min.js"></script>
+		{% endblock scripts %}
